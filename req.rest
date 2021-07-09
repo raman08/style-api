@@ -1,0 +1,15 @@
+POST http://localhost:3000/auth/verify HTTP/1.1
+content-type: application/json
+
+{
+	"phoneNo": 917347501113
+}
+
+###
+POST http://localhost:3000/auth/verify/otp HTTP/1.1
+Content-Type: application/json
+
+{
+	"phoneNo": 917347501113,
+	"otp": 9132
+}

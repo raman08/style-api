@@ -25,6 +25,10 @@ const userSchema = mongoose.Schema({
 		type: String,
 		default: 'Mens',
 	},
+	verified: {
+		type: Boolean,
+		default: false,
+	},
 });
 
 module.exports = mongoose.model('User', userSchema);
