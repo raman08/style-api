@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt');
+const { validationResult } = require('express-validator');
 const client = require('twilio')(
 	process.env.TWILIO_ACCOUNT_SID,
 	process.env.TWILIO_AUTH_TOKEN
@@ -15,7 +16,20 @@ const User = require('../models/user');
 exports.postSendOtp = async (req, res, next) => {
 	const { phoneNo } = req.body;
 
-	console.log(`Phone No: ${phoneNo}`);
+	const validationErrors = validationResult(req);
+
+	if (!validationErrors.isEmpty()) {
+		return res.status(400).json({
+			message: 'Invalid Data',
+			errors: validationErrors.array().map(error => {
+				return {
+					error: error.msg,
+					value: error.value,
+					param: error.param,
+				};
+			}),
+		});
+	}
 
 	client.verify
 		.services(process.env.TWILIO_SERVICE_SID)
@@ -30,13 +44,14 @@ exports.postSendOtp = async (req, res, next) => {
 				statusCode: 200,
 			};
 
-			console.log(data);
-
 			res.json({ message: 'Otp Send Sucessfully', data: data });
 		})
 		.catch(err => {
 			console.log(err);
-			res.json({ message: 'Something Went Wrong', statusCode: 500 });
+			res.status(500).json({
+				message: 'Something Went Wrong',
+				statusCode: 500,
+			});
 		});
 };
 
@@ -50,6 +65,21 @@ exports.postSendOtp = async (req, res, next) => {
 exports.postVerifyPhoneNo = async (req, res, next) => {
 	const { phoneNo, otp } = req.body;
 
+	const validationErrors = validationResult(req);
+
+	if (!validationErrors.isEmpty()) {
+		return res.status(400).json({
+			message: 'Invalid Data',
+			errors: validationErrors.array().map(error => {
+				return {
+					error: error.msg,
+					value: error.value,
+					param: error.param,
+				};
+			}),
+		});
+	}
+
 	client.verify
 		.services(process.env.TWILIO_SERVICE_SID)
 		.verificationChecks.create({ to: `+${phoneNo}`, code: otp })
@@ -62,9 +92,14 @@ exports.postVerifyPhoneNo = async (req, res, next) => {
 				statusCode: 200,
 			};
 			console.log(data);
-			res.json({ message: 'Phone no verified', data: data });
+			res.json({ message: 'Phone number verified', data: data });
 		})
 		.catch(err => {
+			if (err.code === 20404) {
+				return res.status(404).json({
+					message: 'No otp request for this number',
+				});
+			}
 			console.log(err);
 			res.status(500).json({
 				message: 'Something Went Wrong',
@@ -86,6 +121,21 @@ exports.postVerifyPhoneNo = async (req, res, next) => {
 //
 // ##########
 exports.postSignUp = async (req, res, next) => {
+	const validationErrors = validationResult(req);
+
+	if (!validationErrors.isEmpty()) {
+		return res.status(400).json({
+			message: 'Invalid Data',
+			errors: validationErrors.array().map(error => {
+				return {
+					error: error.msg,
+					value: error.value,
+					param: error.param,
+				};
+			}),
+		});
+	}
+
 	const { name, password, age, gender, phoneNo, prefrenceStyle, verified } =
 		req.body;
 

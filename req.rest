@@ -3,7 +3,7 @@ POST http://localhost:3000/auth/verify HTTP/1.1
 content-type: application/json
 
 {
-	"phoneNo": 917347501113
+	"phoneNo": 9173475011132
 }
 
 ###
@@ -13,7 +13,7 @@ Content-Type: application/json
 
 {
 	"phoneNo": 917347501113,
-	"otp": 794933
+	"otp": 7949
 }
 
 ###
@@ -24,9 +24,8 @@ Content-Type: application/json
 {
 	"name": "Raman Preet Singh",
 	"phoneNo": "7347501113",
-	"password": "test1234",
-	"age": 18,
+	"password": "test2222",
+	"age": "18",
 	"gender": "Male",
-	"prefrenceStyle": "Male",
-	"verified": true
+	"prefrenceStyle": "Male"
 }
