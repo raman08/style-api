@@ -1,3 +1,4 @@
+# Request to send otp to a number
 POST http://localhost:3000/auth/verify HTTP/1.1
 content-type: application/json
 
@@ -6,10 +7,26 @@ content-type: application/json
 }
 
 ###
+# Request to verify the opt send to a given number
 POST http://localhost:3000/auth/verify/otp HTTP/1.1
 Content-Type: application/json
 
 {
 	"phoneNo": 917347501113,
-	"otp": 9132
+	"otp": 794933
+}
+
+###
+# Request to register a user given its details
+POST http://localhost:3000/auth/user/signup HTTP/1.1
+Content-Type: application/json
+
+{
+	"name": "Raman Preet Singh",
+	"phoneNo": "7347501113",
+	"password": "test1234",
+	"age": 18,
+	"gender": "Male",
+	"prefrenceStyle": "Male",
+	"verified": true
 }
