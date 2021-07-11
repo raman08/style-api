@@ -2,16 +2,19 @@ const express = require('express');
 const { body } = require('express-validator');
 
 const authController = require('../controllers/auth');
+const { isAuth } = require('../middleware/isAuth');
 const User = require('../models/user');
 
 const router = express.Router();
 
+// Send Otp Route
 router.post(
 	'/verify',
 	body('phoneNo').isMobilePhone().withMessage('Invalid Phone Number'),
 	authController.postSendOtp
 );
 
+// Verify Otp Route
 router.post(
 	'/verify/otp',
 	[
@@ -24,6 +27,7 @@ router.post(
 	authController.postVerifyPhoneNo
 );
 
+// SignUp Route
 router.post(
 	'/user/signup',
 	[
@@ -36,7 +40,6 @@ router.post(
 			.withMessage('Invalid Phone Number')
 			.custom(async (value, { req }) => {
 				const user = await User.findOne({ phoneNo: value });
-				console.log(user);
 				if (user) {
 					throw new Error(
 						'User already register with this phone number. Sign In instead?'
@@ -55,4 +58,21 @@ router.post(
 	authController.postSignUp
 );
 
+// SignIn With Password Route
+router.post(
+	'/user/signin/password',
+	[body('phoneNo').isMobilePhone().withMessage('Invalid Phone Number')],
+	authController.postSignInByPassword
+);
+
+// SignIn With Refresh Token
+router.post('/user/signin/refresh', authController.postSignInByRefreshToken);
+
+// Secert (Only signin user can acess this)
+router.get('/secret', isAuth, (req, res, next) => {
+	if (req.isAuth) {
+		return res.json({ secret: 'This is a secret' });
+	}
+	res.status(401).json({ secret: null, error: 'Data Breach' });
+});
 module.exports = router;

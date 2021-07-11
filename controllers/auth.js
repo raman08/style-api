@@ -1,11 +1,14 @@
 const bcrypt = require('bcrypt');
 const { validationResult } = require('express-validator');
+const jwt = require('jsonwebtoken');
+
 const client = require('twilio')(
 	process.env.TWILIO_ACCOUNT_SID,
 	process.env.TWILIO_AUTH_TOKEN
 );
 
 const User = require('../models/user');
+const RefreshToken = require('../models/userRefershToken');
 
 // ##########
 // 		Controller to send an Otp to a phoneNo
@@ -162,5 +165,112 @@ exports.postSignUp = async (req, res, next) => {
 		res.status(500).json({
 			message: 'Something went wrong. Plese try again later.',
 		});
+	}
+};
+
+// ##########
+// 		Controller to signin user by password
+//
+//		Required => phoneNo: phoneNo of user
+// 					password: Plain text password entered by user
+//
+//
+// ##########
+exports.postSignInByPassword = async (req, res, next) => {
+	const validationErrors = validationResult(req);
+
+	if (!validationErrors.isEmpty()) {
+		return res.status(400).json({
+			message: 'Invalid Data',
+			errors: validationErrors.array().map(error => {
+				return {
+					error: error.msg,
+					value: error.value,
+					param: error.param,
+				};
+			}),
+		});
+	}
+
+	const { phoneNo, password } = req.body;
+
+	try {
+		const user = await User.findOne({ phoneNo: phoneNo });
+
+		if (!user) {
+			return res.json({ message: 'No user found!' });
+		}
+
+		const isEqual = await bcrypt.compare(password, user.password);
+
+		if (!isEqual) {
+			return res.json({ message: 'Invalid Password!' });
+		}
+
+		const token = jwt.sign(
+			{ id: user._id, phoneNo: user.phoneNo },
+			process.env.JWT_SECERET,
+			{ expiresIn: process.env.JWT_EXPIRE_TIME }
+		);
+		console.log('Token Expires In: ', process.env.JWT_EXPIRE_TIME);
+
+		const refreshToken = await RefreshToken.createToken(user);
+
+		res.json({
+			user: { id: user.id, phoneNo: user.phoneNo },
+			acessToken: token,
+			refreshToken: refreshToken,
+		});
+	} catch (err) {
+		console.error(err);
+		res.status(500).json({ message: 'Something Went Wrong' });
+	}
+};
+
+// ##########
+// 		Controller to signin user by password
+//
+//		Required => refreshToken: refresh token of the user
+//
+//
+// ##########
+exports.postSignInByRefreshToken = async (req, res, next) => {
+	const { refreshToken } = req.body;
+
+	try {
+		const rToken = await RefreshToken.findOne({
+			token: refreshToken,
+		})
+			.populate('userId', '_id name phoneNo')
+			.exec();
+
+		console.log(rToken);
+
+		if (!rToken) {
+			res.status(403).json({ message: 'Invalid Refresh Token!' });
+		}
+
+		if (RefreshToken.verifyExpiration(rToken)) {
+			RefreshToken.findByIdAndRemove(rToken._id);
+			return res.status(403).json({
+				message:
+					'Refresh token was expired. Please make a new signin request!',
+			});
+		}
+
+		const accessToken = jwt.sign(
+			{ id: rToken.userId._id, phoneNo: rToken.userId.phoneNo },
+			process.env.JWT_SECERET,
+			{ expiresIn: process.env.JWT_EXPIRE_TIME }
+		);
+
+		return res.json({
+			message: 'Operation Successfull!',
+			accessToken: accessToken,
+			refreshToken: rToken.token,
+		});
+	} catch (err) {
+		console.error(err);
+		res.status(500).json({ message: 'Something Went Wrong' });
 	}
 };
