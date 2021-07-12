@@ -54,10 +54,16 @@ Content-Type: application/json
 ###
 # Testing the signin
 GET http://localhost:3000/auth/secret HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZTlkYzQ5ZGM2NGJmMTU3ZDJiYTM1OCIsInBob25lTm8iOjczNDc1MDExMTMsImlhdCI6MTYyNjExMTE0MiwiZXhwIjoxNjI2MTE0NzQyfQ.DDRWyf5eqPn4ebP2ZF81Pv7VoAprlVRrLvUHH8zwBwg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZTlkYzQ5ZGM2NGJmMTU3ZDJiYTM1OCIsInBob25lTm8iOjczNDc1MDExMTMsImlhdCI6MTYyNjExNDgyNSwiZXhwIjoxNjI2MTE4NDI1fQ.g0AG-9buRheMiLH5ad5rDGlkD63PoEhivnecmBQhVDM
 
 
 ###
-# Get all the user collection
-GET http://localhost:3000/user/collection?category=Test3 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZTlkYzQ5ZGM2NGJmMTU3ZDJiYTM1OCIsInBob25lTm8iOjczNDc1MDExMTMsImlhdCI6MTYyNjExMTE0MiwiZXhwIjoxNjI2MTE0NzQyfQ.DDRWyf5eqPn4ebP2ZF81Pv7VoAprlVRrLvUHH8zwBwg
+# Get all the user collection or collection for specific category
+GET http://localhost:3000/user/collection? HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZTlkYzQ5ZGM2NGJmMTU3ZDJiYTM1OCIsInBob25lTm8iOjczNDc1MDExMTMsImlhdCI6MTYyNjExNDgyNSwiZXhwIjoxNjI2MTE4NDI1fQ.g0AG-9buRheMiLH5ad5rDGlkD63PoEhivnecmBQhVDM
+
+
+###
+#  Delete a specific collection document
+DELETE http://localhost:3000/user/collection/delete/60ec8cd39ba54210903bf356 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZTlkYzQ5ZGM2NGJmMTU3ZDJiYTM1OCIsInBob25lTm8iOjczNDc1MDExMTMsImlhdCI6MTYyNjExNDgyNSwiZXhwIjoxNjI2MTE4NDI1fQ.g0AG-9buRheMiLH5ad5rDGlkD63PoEhivnecmBQhVDM

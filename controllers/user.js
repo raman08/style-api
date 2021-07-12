@@ -1,6 +1,13 @@
 const Collection = require('../models/userCollection');
 const User = require('../models/user');
+const fileHandel = require('../utils/file');
 
+// ##########
+// 		Controller to Get All the collection of particular user or filter by category
+//
+//		Required => (Optional - query parameter) category: category filter
+//
+// ##########
 exports.getUserCollection = async (req, res, next) => {
 	const category = req.query.category;
 	console.log(category);
@@ -37,6 +44,14 @@ exports.getUserCollection = async (req, res, next) => {
 	}
 };
 
+// ##########
+// 		Controller to create a new User Collection
+//
+//		Required => category: category of the collection
+// 					brand: brand of the collection
+// 					collectionImage: image for the collection
+//
+// ##########
 exports.postUserCollection = async (req, res, next) => {
 	const { category, brand } = req.body;
 	const collectionImage = req.file;
@@ -52,7 +67,6 @@ exports.postUserCollection = async (req, res, next) => {
 	try {
 		const user = await User.findById(req.user._id);
 
-		console.log(`Collection Image File: /${collectionImage.path}`);
 		const collection = new Collection({
 			category: category,
 			brand: brand,
@@ -75,20 +89,34 @@ exports.postUserCollection = async (req, res, next) => {
 	}
 };
 
+// ##########
+// 		Controller to delete the user Collection
+//
+//		Required =>  collectionId (as url parameter): id of the colleciton document to be deleted
+//
+// ##########
 exports.deleteUserCollection = async (req, res, next) => {
 	const collectionId = req.params.collectionId;
+	try {
+		const user = await User.findById(req.user._id);
+		const collection = await Collection.findById(collectionId);
 
-	const user = await User.findById(req.user._id);
-	const collection = await Collection.findById(collectionId);
+		if (!collection) {
+			return res.status(404).json({ message: 'No Collection Found' });
+		}
 
-	if (!collection) {
-		return res.status(404).json('No Collection Found');
+		await Collection.deleteOne({ _id: collectionId, userId: req.user._id });
+
+		user.collections.pull(collectionId);
+		await user.save();
+
+		fileHandel.deletefile(collection.imageURI.substring(1));
+
+		res.json({
+			message: 'Procuct deleted Sucessfully',
+		});
+	} catch (err) {
+		console.error(err);
+		res.status(500).json({ message: 'Something Went Wrong' });
 	}
-
-	await Collection.deleteOne({ _id: collectionId, userId: req.user._id });
-
-	user.collections.pull(collectionId);
-	const saveUser = await user.save();
-
-	res.json({ message: 'Procuct deleted Sucessfully', collection, saveUser });
 };
