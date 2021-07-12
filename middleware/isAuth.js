@@ -14,12 +14,15 @@ exports.isAuth = (req, res, next) => {
 		decodedToken = jwt.verify(token, process.env.JWT_SECERET);
 	} catch (err) {
 		req.isAuth = false;
+
 		console.log(err);
-		// if (err instanceof jwt.TokenExpiredError) {
-		// 	return res
-		// 		.status(401)
-		// 		.send({ message: 'Access Token was expired!' });
-		// }
+
+		if (err instanceof jwt.TokenExpiredError) {
+			return res
+				.status(401)
+				.send({ message: 'Access Token was expired!' });
+		}
+
 		return res.status(403).json({ message: 'Token not valid' });
 	}
 
@@ -29,6 +32,6 @@ exports.isAuth = (req, res, next) => {
 	}
 
 	req.isAuth = true;
-	req.user = decodedToken.user;
+	req.user = { _id: decodedToken.id, phoneNo: decodedToken.phoneNo };
 	next();
 };

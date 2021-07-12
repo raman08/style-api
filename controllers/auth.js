@@ -247,7 +247,7 @@ exports.postSignInByRefreshToken = async (req, res, next) => {
 		console.log(rToken);
 
 		if (!rToken) {
-			res.status(403).json({ message: 'Invalid Refresh Token!' });
+			return res.status(403).json({ message: 'Invalid Refresh Token!' });
 		}
 
 		if (RefreshToken.verifyExpiration(rToken)) {

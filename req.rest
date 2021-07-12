@@ -36,7 +36,7 @@ POST http://localhost:3000/auth/user/signin/password HTTP/1.1
 Content-Type: application/json
 
 {
-	"phoneNo": "rafdsaf",
+	"phoneNo": "7347501113",
 	"password": "test2222"
 
 }
@@ -47,11 +47,17 @@ POST http://localhost:3000/auth/user/signin/refresh HTTP/1.1
 Content-Type: application/json
 
 {
-	"refreshToken": "fe41089f-a11d-42a0-8bc5-ca3c31dc0fb8"
+	"refreshToken": "8d050229-5bac-482e-a825-8281bb05c4d1"
 
 }
 
 ###
 # Testing the signin
 GET http://localhost:3000/auth/secret HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZTlkYzQ5ZGM2NGJmMTU3ZDJiYTM1OCIsInBob25lTm8iOjczNDc1MDExMTMsImlhdCI6MTYyNjAyNzY2OSwiZXhwIjoxNjI2MDMxMjY5fQ.ZJTBL4xanCQJV5VxIk_2EkfFY3hpu873hMQkE9EzEd4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZTlkYzQ5ZGM2NGJmMTU3ZDJiYTM1OCIsInBob25lTm8iOjczNDc1MDExMTMsImlhdCI6MTYyNjExMTE0MiwiZXhwIjoxNjI2MTE0NzQyfQ.DDRWyf5eqPn4ebP2ZF81Pv7VoAprlVRrLvUHH8zwBwg
+
+
+###
+# Get all the user collection
+GET http://localhost:3000/user/collection?category=Test3 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZTlkYzQ5ZGM2NGJmMTU3ZDJiYTM1OCIsInBob25lTm8iOjczNDc1MDExMTMsImlhdCI6MTYyNjExMTE0MiwiZXhwIjoxNjI2MTE0NzQyfQ.DDRWyf5eqPn4ebP2ZF81Pv7VoAprlVRrLvUHH8zwBwg

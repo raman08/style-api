@@ -11,6 +11,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
 const authRoutes = require('./routes/auth');
+const userRoutes = require('./routes/user');
 
 const app = express();
 
@@ -30,8 +31,11 @@ mongoose
 		console.log(err);
 	});
 
-// Adding authentication routes
+// authentication routes
 app.use('/auth', authRoutes);
+
+// User Routes
+app.use('/user', userRoutes);
 
 // Starting the server
 app.listen(3000, () =>
