@@ -1,24 +1,34 @@
 const express = require('express');
 const multer = require('multer');
 
-const userController = require('../controllers/user');
-const router = express.Router();
+const collectionController = require('../controllers/collection');
+const looksController = require('../controllers/looks');
 const { isAuth } = require('../middleware/isAuth');
 const { multerCollectionImage } = require('../middleware/multerUtil');
 
-router.get('/collection/', isAuth, userController.getUserCollection);
+const router = express.Router();
+
+// ################## Collection Routes ########################
+router.get('/collection/', isAuth, collectionController.getUserCollection);
 
 router.post(
 	'/collection/new',
 	isAuth,
 	multerCollectionImage,
-	userController.postUserCollection
+	collectionController.postUserCollection
 );
 
 router.delete(
 	'/collection/delete/:collectionId',
 	isAuth,
-	userController.deleteUserCollection
+	collectionController.deleteUserCollection
 );
+
+// ################################### Looks Routes ##########################################
+router.get('/looks', isAuth, looksController.getLooks);
+
+router.post('/looks/new', isAuth, looksController.postLook);
+
+router.delete('/looks/delete/:lookId', isAuth, looksController.deleteLook);
 
 module.exports = router;

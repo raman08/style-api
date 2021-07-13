@@ -1,5 +1,6 @@
 const Collection = require('../models/userCollection');
 const User = require('../models/user');
+const Look = require('../models/looks');
 const fileHandel = require('../utils/file');
 
 // ##########
@@ -104,6 +105,17 @@ exports.deleteUserCollection = async (req, res, next) => {
 		if (!collection) {
 			return res.status(404).json({ message: 'No Collection Found' });
 		}
+
+		collection.looks.forEach(async lookId => {
+			const look = await Look.findById(lookId);
+
+			if (look.clothings.length <= 1) {
+				Look.findByIdAndRemove(lookId);
+			}
+
+			look.clothings.pull(collectionId);
+			await look.save();
+		});
 
 		await Collection.deleteOne({ _id: collectionId, userId: req.user._id });
 

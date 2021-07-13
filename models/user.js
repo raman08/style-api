@@ -35,6 +35,12 @@ const userSchema = mongoose.Schema({
 			ref: 'collection',
 		},
 	],
+	looks: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'looks',
+		},
+	],
 });
 
 module.exports = mongoose.model('User', userSchema);

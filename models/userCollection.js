@@ -16,6 +16,12 @@ const collectionSchema = mongoose.Schema({
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'user',
 	},
+	looks: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'looks',
+		},
+	],
 });
 
 module.exports = mongoose.model('Collection', collectionSchema);
