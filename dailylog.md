@@ -6,3 +6,4 @@
 | Jul, 10 2021 | 3hrs       | Added the signup feature with input verification and verification of users via phone Number |
 | Jul, 11 2021 | 3hrs       | Basic Signin completed                                                                      |
 | Jul, 12 2021 | 4hrs       | Collection Module base completed                                                            |
+| Jul, 13 2021 | 3hrs       | Completed Look Module                                                                       |
