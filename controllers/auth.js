@@ -87,6 +87,12 @@ exports.postVerifyPhoneNo = async (req, res, next) => {
 		.services(process.env.TWILIO_SERVICE_SID)
 		.verificationChecks.create({ to: `+${phoneNo}`, code: otp })
 		.then(async verification_check => {
+			if (!verification_check.valid) {
+				return res.status(403).json({
+					message: 'Could not verify the phone number!',
+					statusCode: 403,
+				});
+			}
 			const data = {
 				phoneNo: verification_check.to,
 				channel: verification_check.channel,
@@ -101,6 +107,7 @@ exports.postVerifyPhoneNo = async (req, res, next) => {
 			if (err.code === 20404) {
 				return res.status(404).json({
 					message: 'No otp request for this number',
+					statusCode: 404,
 				});
 			}
 			console.log(err);
@@ -139,8 +146,7 @@ exports.postSignUp = async (req, res, next) => {
 		});
 	}
 
-	const { name, password, age, gender, phoneNo, prefrenceStyle, verified } =
-		req.body;
+	const { name, password, age, gender, phoneNo, verified } = req.body;
 
 	try {
 		const hashPassword = await bcrypt.hash(password, 12);
@@ -150,7 +156,6 @@ exports.postSignUp = async (req, res, next) => {
 			password: hashPassword,
 			age: age,
 			gender: gender,
-			prefrenceStyle: prefrenceStyle,
 			verified: verified,
 		});
 
@@ -204,7 +209,9 @@ exports.postSignInByPassword = async (req, res, next) => {
 		const isEqual = await bcrypt.compare(password, user.password);
 
 		if (!isEqual) {
-			return res.json({ message: 'Invalid Password!' });
+			return res
+				.status(401)
+				.json({ message: 'Invalid Password!', statusCode: 401 });
 		}
 
 		const token = jwt.sign(
@@ -237,17 +244,18 @@ exports.postSignInByPassword = async (req, res, next) => {
 exports.postSignInByRefreshToken = async (req, res, next) => {
 	const { refreshToken } = req.body;
 
+	console.log(refreshToken);
 	try {
 		const rToken = await RefreshToken.findOne({
 			token: refreshToken,
-		})
-			.populate('userId', '_id name phoneNo')
-			.exec();
+		});
 
 		console.log(rToken);
 
 		if (!rToken) {
-			return res.status(403).json({ message: 'Invalid Refresh Token!' });
+			return res
+				.status(403)
+				.json({ message: 'Invalid Refresh Token!', statusCode: 403 });
 		}
 
 		if (RefreshToken.verifyExpiration(rToken)) {
@@ -255,6 +263,7 @@ exports.postSignInByRefreshToken = async (req, res, next) => {
 			return res.status(403).json({
 				message:
 					'Refresh token was expired. Please make a new signin request!',
+				statusCode: 403,
 			});
 		}
 
@@ -265,7 +274,7 @@ exports.postSignInByRefreshToken = async (req, res, next) => {
 		);
 
 		return res.json({
-			message: 'Operation Successfull!',
+			message: 'Access Token generated!',
 			accessToken: accessToken,
 			refreshToken: rToken.token,
 		});

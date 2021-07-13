@@ -21,10 +21,6 @@ const userSchema = mongoose.Schema({
 		type: String,
 		required: true,
 	},
-	prefrenceStyle: {
-		type: String,
-		default: 'Mens',
-	},
 	verified: {
 		type: Boolean,
 		default: false,
