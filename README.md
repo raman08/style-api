@@ -4,6 +4,21 @@ This backend is implemented using node-express framework.
 
 <br>
 
+- [Wardo App backend](#wardo-app-backend)
+  - [API Endpoints](#api-endpoints)
+    - [Authentication Module](#authentication-module)
+    - [Collections Module](#collections-module)
+    - [Looks Module](#looks-module)
+  - [Models Structure](#models-structure)
+    - [User Model](#user-model)
+      - [Example](#example)
+    - [User RefreshToken Model](#user-refreshtoken-model)
+      - [Example](#example-1)
+    - [Collections Model](#collections-model)
+      - [Example](#example-2)
+    - [Looks Schema](#looks-schema)
+      - [Example](#example-3)
+
 ## API Endpoints
 
 <br>
