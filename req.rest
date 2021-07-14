@@ -53,42 +53,42 @@ Content-Type: application/json
 ###
 # Testing the signin
 GET http://localhost:3000/auth/secret HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZTlkYzQ5ZGM2NGJmMTU3ZDJiYTM1OCIsInBob25lTm8iOjczNDc1MDExMTMsImlhdCI6MTYyNjE3NjcwMiwiZXhwIjoxNjI2MTgwMzAyfQ.ubgbUFdSOIRZYMcIpvPBnjjIC7qWRlDbZoc9CUnhNfs
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZTlkYzQ5ZGM2NGJmMTU3ZDJiYTM1OCIsImlhdCI6MTYyNjI1MTExMywiZXhwIjoxNjI2MjU0NzEzfQ.GnYX_eeQ5gW7qDeTdKZRSuXG3q3yMtBYde0zYqIqk9g
 
 
 ###
 # Get all the user collection or collection for specific category
-GET http://localhost:3000/user/collection? HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZTlkYzQ5ZGM2NGJmMTU3ZDJiYTM1OCIsInBob25lTm8iOjczNDc1MDExMTMsImlhdCI6MTYyNjE3NjcwMiwiZXhwIjoxNjI2MTgwMzAyfQ.ubgbUFdSOIRZYMcIpvPBnjjIC7qWRlDbZoc9CUnhNfs
+GET http://localhost:3000/user/collection HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZTlkYzQ5ZGM2NGJmMTU3ZDJiYTM1OCIsImlhdCI6MTYyNjI1MTExMywiZXhwIjoxNjI2MjU0NzEzfQ.GnYX_eeQ5gW7qDeTdKZRSuXG3q3yMtBYde0zYqIqk9g
 
 
 ###
 #  Delete a specific collection document
-DELETE http://localhost:3000/user/collection/delete/60ed7b22fe3f599a7b48a597 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZTlkYzQ5ZGM2NGJmMTU3ZDJiYTM1OCIsInBob25lTm8iOjczNDc1MDExMTMsImlhdCI6MTYyNjE3NjcwMiwiZXhwIjoxNjI2MTgwMzAyfQ.ubgbUFdSOIRZYMcIpvPBnjjIC7qWRlDbZoc9CUnhNfs
+DELETE http://localhost:3000/user/collection/delete/60ee9b59fb7f3d65204b02a4 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZTlkYzQ5ZGM2NGJmMTU3ZDJiYTM1OCIsImlhdCI6MTYyNjI1MTExMywiZXhwIjoxNjI2MjU0NzEzfQ.GnYX_eeQ5gW7qDeTdKZRSuXG3q3yMtBYde0zYqIqk9g
 
 
 ###
 # Get All looks
-GET http://localhost:3000/user/looks HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZTlkYzQ5ZGM2NGJmMTU3ZDJiYTM1OCIsInBob25lTm8iOjczNDc1MDExMTMsImlhdCI6MTYyNjE3NjcwMiwiZXhwIjoxNjI2MTgwMzAyfQ.ubgbUFdSOIRZYMcIpvPBnjjIC7qWRlDbZoc9CUnhNfs
+GET http://localhost:3000/user/looks?type=Party HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZTlkYzQ5ZGM2NGJmMTU3ZDJiYTM1OCIsImlhdCI6MTYyNjI1MTExMywiZXhwIjoxNjI2MjU0NzEzfQ.GnYX_eeQ5gW7qDeTdKZRSuXG3q3yMtBYde0zYqIqk9g
 
 ###
 # Create a new look
 POST  http://localhost:3000/user/looks/new HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZTlkYzQ5ZGM2NGJmMTU3ZDJiYTM1OCIsInBob25lTm8iOjczNDc1MDExMTMsImlhdCI6MTYyNjE3NjcwMiwiZXhwIjoxNjI2MTgwMzAyfQ.ubgbUFdSOIRZYMcIpvPBnjjIC7qWRlDbZoc9CUnhNfs
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZTlkYzQ5ZGM2NGJmMTU3ZDJiYTM1OCIsImlhdCI6MTYyNjI1MTExMywiZXhwIjoxNjI2MjU0NzEzfQ.GnYX_eeQ5gW7qDeTdKZRSuXG3q3yMtBYde0zYqIqk9g
 
 {
-	"type": "Triplet",
-	"name": "Look 3",
+	"type": "Party",
+	"name": "Party 2",
 	"clothings": [
-		"60ed7b1cfe3f599a7b48a593",
-		"60e9dc49dc64bf157d2ba358"
+		"60ee92ede237642b34491198",
+		"60ee99478c788f591ce45ead"
 	]
 }
 
 ###
-#  Delete a specific collection document
-DELETE http://localhost:3000/user/looks/delete/60ed7c8e0598789fcc3b00d9 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZTlkYzQ5ZGM2NGJmMTU3ZDJiYTM1OCIsInBob25lTm8iOjczNDc1MDExMTMsImlhdCI6MTYyNjE3NjcwMiwiZXhwIjoxNjI2MTgwMzAyfQ.ubgbUFdSOIRZYMcIpvPBnjjIC7qWRlDbZoc9CUnhNfs
+#  Delete a specific look
+DELETE http://localhost:3000/user/looks/delete/60eea052a62eff7ac0b22aeb HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZTlkYzQ5ZGM2NGJmMTU3ZDJiYTM1OCIsImlhdCI6MTYyNjI1MTExMywiZXhwIjoxNjI2MjU0NzEzfQ.GnYX_eeQ5gW7qDeTdKZRSuXG3q3yMtBYde0zYqIqk9g

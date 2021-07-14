@@ -25,6 +25,7 @@ exports.getUserCollection = async (req, res, next) => {
 		query.category = category;
 	}
 
+	console.log(query);
 	try {
 		const collections = await Collection.find(query);
 
@@ -33,7 +34,6 @@ exports.getUserCollection = async (req, res, next) => {
 				_id: collection._id,
 				category: collection.category,
 				brand: collection.brand,
-				user: collection.userId,
 				imageURI: collection.imageURI,
 			};
 		});
@@ -77,12 +77,17 @@ exports.postUserCollection = async (req, res, next) => {
 
 		user.collections.push(collection);
 		await collection.save();
-		const updatedUser = await user.save();
+		await user.save();
 
+		const collectionData = {
+			_id: collection._id,
+			category: collection.category,
+			brand: collection.brand,
+			image: collection.imageURI,
+		};
 		res.status(201).json({
 			messsage: 'Collection saved Sucessfully',
-			collection: collection,
-			user: updatedUser,
+			collection: collectionData,
 		});
 	} catch (err) {
 		console.error(err);

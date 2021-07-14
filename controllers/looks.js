@@ -18,11 +18,22 @@ exports.getLooks = async (req, res, next) => {
 	}
 
 	try {
-		const looks = await Look.find(filterQuery)
-			.populate('clothings', '_id category brand imageURI')
-			.exec();
+		const looks = await Look.find(filterQuery).populate(
+			'clothings',
+			'_id category brand imageURI'
+		);
+		const looksData = looks.map(look => {
+			return {
+				_id: look._id,
+				type: look.type,
+				name: look.name,
+				clothings: look.clothings,
+			};
+		});
 
-		res.json({ looks });
+		console.log(looks);
+		console.log(looksData);
+		res.json({ looks: looksData });
 	} catch (err) {
 		console.error(err);
 		res.status(500).json({ message: 'Something Went Wrong' });
@@ -45,8 +56,6 @@ exports.postLook = async (req, res, next) => {
 		});
 		const user = await User.findById(req.user._id);
 
-		const collections = [];
-
 		await look.save();
 
 		clothings.forEach(async cloth => {
@@ -57,12 +66,17 @@ exports.postLook = async (req, res, next) => {
 
 		user.looks.push(look._id);
 
-		const savedUser = await user.save();
+		await user.save();
 
+		const lookData = {
+			_id: look._id,
+			type: look.type,
+			name: look.name,
+			clothings: look.clothings,
+		};
 		res.status(201).json({
 			message: 'Look created sucessfully!',
-			look,
-			savedUser,
+			look: lookData,
 		});
 	} catch (err) {
 		console.error(err);
