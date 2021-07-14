@@ -3,7 +3,7 @@ POST http://localhost:3000/auth/verify HTTP/1.1
 content-type: application/json
 
 {
-	"phoneNo": 9173475011133
+	"phoneNo": 917347501113
 }
 
 ###

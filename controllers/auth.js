@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const bcrypt = require('bcrypt');
 const { validationResult } = require('express-validator');
 const jwt = require('jsonwebtoken');
@@ -19,18 +21,18 @@ const RefreshToken = require('../models/userRefershToken');
 exports.postSendOtp = async (req, res, next) => {
 	const { phoneNo } = req.body;
 
-	const validationErrors = validationResult(req);
-
+	const validationErrors = await validationResult(req);
 	if (!validationErrors.isEmpty()) {
 		return res.status(400).json({
 			message: 'Invalid Data',
 			errors: validationErrors.array().map(error => {
 				return {
-					error: error.msg,
+					message: error.msg,
 					value: error.value,
 					param: error.param,
 				};
 			}),
+			statusCode: 400,
 		});
 	}
 
@@ -50,9 +52,14 @@ exports.postSendOtp = async (req, res, next) => {
 			res.json({ message: 'Otp Send Sucessfully', data: data });
 		})
 		.catch(err => {
-			console.log(err);
+			if ((err.code = 60200)) {
+				return res.status(400).json({
+					statusCode: 400,
+					message: 'Invalid Phone Number',
+				});
+			}
 			res.status(500).json({
-				message: 'Something Went Wrong',
+				errors: { message: 'Something Went Wrong' },
 				statusCode: 500,
 			});
 		});
