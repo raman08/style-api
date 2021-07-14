@@ -2,7 +2,13 @@
 
 This backend is implemented using node-express framework.
 
-## Authentication Module
+<br>
+
+## API Endpoints
+
+<br>
+
+### Authentication Module
 
 > **Base URL:** /auth
 
@@ -247,7 +253,7 @@ This backend is implemented using node-express framework.
 <hr>
 <br>
 
-## Collections Module
+### Collections Module
 
 > **Base URI**: /user/collection
 
@@ -429,7 +435,7 @@ This backend is implemented using node-express framework.
 
 <br>
 
-## Looks Module
+### Looks Module
 
 > **Base URI**: /user/looks
 
@@ -656,3 +662,140 @@ This backend is implemented using node-express framework.
         ```json
         { "message": "No Look Found" }
         ```
+
+<br>
+
+## Models Structure
+
+<br>
+
+### User Model
+
+<br>
+
+This model store the basic information for the user.
+
+<br>
+
+| Field Name | Type                             | Description                                    |
+| ---------- | -------------------------------- | ---------------------------------------------- |
+| Name       | String                           | **REQUIRED** Name of the user                  |
+| Password   | String                           | **REQUIRED** Password of the user              |
+| Phone No.  | Integer                          | **REQUIRED** Phone Number of the user          |
+| Age        | Integer                          | **REQUIRED** Age of the user                   |
+| Gender     | String                           | **REQUIRED** Gender of the user                |
+| Verified   | Boolean                          | _True_ if user is verified. Default is _false_ |
+| Collection | [Object ID \| Collection Schema] | The list of the collection that the user have  |
+| Looks      | [Object ID \| Looks Schema]      | The list of the looks that the user have       |
+
+<br>
+
+#### Example
+
+```json
+{
+	"_id": "60e9dc49dc64bf157d2ba358",
+	"prefrenceStyle": "Male",
+	"verified": false,
+	"name": "Test User",
+	"phoneNo": "2223334445",
+	"password": "$2b$11$C0eHB16PNmZX7N5T3C5iV.a5LpSADw03UeaqQu/ws2y5V8i14tZCG",
+	"age": "18",
+	"gender": "Male",
+	"collections": [
+		"60ed7b0ffe3f599a7b48a58b",
+		"60ed7b16fe3f599a7b48a58f",
+		"60ed7b1cfe3f599a7b48a593"
+	],
+	"looks": ["60ed7bc20598789fcc3b00be", "60ed7be70598789fcc3b00c4"]
+}
+```
+
+<br>
+
+### User RefreshToken Model
+
+<br>
+This model stores the refresh token for all the user.
+
+<br>
+<br>
+
+| Field Name | Type                    | Description                                           |
+| ---------- | ----------------------- | ----------------------------------------------------- |
+| Token      | uuid                    | **REQUIRED** The refresh token of the user            |
+| User Id    | Object Id\| User Schema | **REQUIRED** The user id                              |
+| Expires At | Date                    | **REQUIRED** The expiration date of the refresh token |
+
+<br>
+
+#### Example
+
+```json
+{
+	"_id": "60eaf28ac7a450125b07d7f6",
+	"token": "9ab3819e-4459-4ff8-acb3-0ad95643acf4",
+	"userId": "60eaf12aec62340d7d2eda5a",
+	"expiresAt": "2021-07-12T03:25:20.606+00:00"
+}
+```
+
+<br>
+
+### Collections Model
+
+<br>
+This model stores the collections of the user
+<br>
+<br>
+
+| Field Name | Type                        | Description                                           |
+| ---------- | --------------------------- | ----------------------------------------------------- |
+| Category   | String                      | **REQUIRED** The category of the collection           |
+| Image URI  | String                      | **REQUIRED** The image url of the collection          |
+| Brand      | String                      | **REQUIRED** The brand of the collection              |
+| User Id    | Object Id\| User Schema     | **REQUIRED** The user id for the collection           |
+| Looks      | [Object Id \| Looks Schema] | The id's of the looks in the collections are required |
+
+<br>
+
+#### Example
+
+```json
+{
+	"_id": "60ee92afe237642b34491188",
+	"looks": ["60ee9e0ffb7f3d65204b02ae", "60ee9e63f0b478750d0e61b6"],
+	"category": "Dresses",
+	"brand": "Dress 1",
+	"imageURI": "/images/collections/Collection_60e9dc49dc64bf157d2ba358_1626247855254.jpeg",
+	"userId": "60e9dc49dc64bf157d2ba358"
+}
+```
+
+<br>
+
+### Looks Schema
+
+<br>
+This model stores the collections of the user
+<br>
+<br>
+
+| Field Name | Type                              | Description                                               |
+| ---------- | --------------------------------- | --------------------------------------------------------- |
+| User Id    | Object Id\| User Schema           | **REQUIRED** The user id for the collection               |
+| Type       | String                            | **REQUIRED** Type of look                                 |
+| Name       | String                            | **Required** Name of the look                             |
+| Clothings  | [Object Id \| Collections Schema] | The id's of the collection which is required in the looks |
+
+#### Example
+
+```json
+{
+	"_id": "60ee9e63f0b478750d0e61b6",
+	"clothings": ["60ee92afe237642b34491188", "60ee930ee237642b344911a8"],
+	"type": "Casual",
+	"name": "Casual 2",
+	"userId": "60e9dc49dc64bf157d2ba358"
+}
+```

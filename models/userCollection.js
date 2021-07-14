@@ -13,6 +13,7 @@ const collectionSchema = mongoose.Schema({
 		required: true,
 	},
 	userId: {
+		required: true,
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'user',
 	},

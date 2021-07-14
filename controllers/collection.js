@@ -11,7 +11,6 @@ const fileHandel = require('../utils/file');
 // ##########
 exports.getUserCollection = async (req, res, next) => {
 	const category = req.query.category;
-	console.log(category);
 
 	if (!req.isAuth) {
 		return res.status(401).json({
