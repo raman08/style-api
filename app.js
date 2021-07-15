@@ -31,6 +31,10 @@ mongoose
 		console.log(err);
 	});
 
+app.get('/api/test', (req, res, next) => {
+	res.json({ message: 'Api is running' });
+});
+
 // authentication routes
 app.use('/auth', authRoutes);
 
