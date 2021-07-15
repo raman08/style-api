@@ -42,6 +42,6 @@ app.use('/auth', authRoutes);
 app.use('/user', userRoutes);
 
 // Starting the server
-app.listen(3000, () =>
+app.listen(process.env.PORT || 3000, () =>
 	console.log('[App.js] Server Started at http://localhost:3000')
 );
