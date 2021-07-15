@@ -24,15 +24,11 @@ userRefreshTokenSchema.statics.createToken = async function (user) {
 		expiresAt.getSeconds() + process.env.JWT_REFRESH_EXPIRE_TIME
 	);
 
-	console.log(`Expires at ${process.env.JWT_REFRESH_EXPIRE_TIME}`);
-
-	console.log(expiresAt);
 	const token = uuidv4();
 
 	const documentData = await this.findOne({ userId: user._id });
 
 	if (documentData) {
-		console.log('Existing User');
 		documentData.token = token;
 		documentData.expiresAt = expiresAt;
 		await documentData.save();
@@ -45,8 +41,6 @@ userRefreshTokenSchema.statics.createToken = async function (user) {
 		userId: user._id,
 		expiresAt: expiresAt.getTime(),
 	});
-
-	console.log(data);
 
 	const refreshToken = await data.save();
 	return refreshToken.token;

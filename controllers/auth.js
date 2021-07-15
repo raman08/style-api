@@ -210,7 +210,9 @@ exports.postSignInByPassword = async (req, res, next) => {
 		const user = await User.findOne({ phoneNo: phoneNo });
 
 		if (!user) {
-			return res.json({ message: 'No user found!' });
+			return res
+				.status(404)
+				.json({ message: 'No user found!', statusCode: 404 });
 		}
 
 		const isEqual = await bcrypt.compare(password, user.password);
@@ -226,13 +228,12 @@ exports.postSignInByPassword = async (req, res, next) => {
 			process.env.JWT_SECERET,
 			{ expiresIn: process.env.JWT_EXPIRE_TIME }
 		);
-		console.log('Token Expires In: ', process.env.JWT_EXPIRE_TIME);
 
 		const refreshToken = await RefreshToken.createToken(user);
 
 		res.json({
 			user: { id: user.id, phoneNo: user.phoneNo },
-			acessToken: token,
+			accessToken: token,
 			refreshToken: refreshToken,
 		});
 	} catch (err) {
@@ -251,13 +252,10 @@ exports.postSignInByPassword = async (req, res, next) => {
 exports.postSignInByRefreshToken = async (req, res, next) => {
 	const { refreshToken } = req.body;
 
-	console.log(refreshToken);
 	try {
 		const rToken = await RefreshToken.findOne({
 			token: refreshToken,
 		});
-
-		console.log(rToken);
 
 		if (!rToken) {
 			return res
