@@ -9,3 +9,7 @@
 | Jul, 13 2021 | 3hrs       | Completed Look Module                                                                       |
 | Jul, 14 2021 | 6hrs       | Completed API Documentation and started the testing of API                                  |
 | Jul, 15 2021 | 4hrs       | Completed the testing of authentication system and Deployed the application                 |
+| Jul, 16 2021 | 0hrs       | N/A                                                                                         |
+| Jul, 17 2021 | 0hrs       | N/A                                                                                         |
+| Jul, 18 2021 | 0hrs       | N/A                                                                                         |
+| Jul, 19 2021 | 2hrs       | Analysed the application                                                                    |
