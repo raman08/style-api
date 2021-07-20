@@ -36,7 +36,7 @@ Content-Type: application/json
 
 {
 	"phoneNo": "7347501113",
-	"password": "test1122"
+	"password": "test2233"
 
 }
 
@@ -62,8 +62,8 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZjY4Y2FmYjkzNTAwZDY2MDVhNjU4NCIsImlhdCI6MTYyNjgwNDg0MSwiZXhwIjoxNjI2ODA4NDQxfQ.p6jjODadSJT1PvlbivMpLg82GFBUJQfNGTdFomLEFY8
 
 {
-	"oldPassword": "test2222",
-	"newPassword": "test1122"
+	"oldPassword": "test2",
+	"newPassword": "test23"
 
 }
 

@@ -305,7 +305,6 @@ exports.postSignInByRefreshToken = async (req, res, next) => {
 };
 
 exports.postChangePassword = async (req, res, next) => {
-	console.log(req.isAuth);
 	if (!req.isAuth) {
 		return res.status(403).json({
 			message: 'User not authorized',
@@ -313,9 +312,23 @@ exports.postChangePassword = async (req, res, next) => {
 		});
 	}
 
+	const validationErrors = validationResult(req);
+
+	if (!validationErrors.isEmpty()) {
+		return res.status(400).json({
+			message: 'Invalid Data',
+			errors: validationErrors.array().map(error => {
+				return {
+					message: error.msg,
+					value: error.value,
+					param: error.param,
+				};
+			}),
+			statusCode: 400,
+		});
+	}
 	const { oldPassword, newPassword } = req.body;
 
-	console.log(oldPassword, newPassword);
 	try {
 		const user = await User.findById(req.user._id);
 
@@ -325,8 +338,6 @@ exports.postChangePassword = async (req, res, next) => {
 				.json({ message: 'No user found!', statusCode: 404 });
 		}
 
-		console.log(user);
-		console.log(oldPassword, user.password);
 		const isEqual = await bcrypt.compare(oldPassword, user.password);
 
 		if (!isEqual) {

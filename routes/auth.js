@@ -69,7 +69,16 @@ router.post(
 router.post('/user/signin/refresh', authController.postSignInByRefreshToken);
 
 // Changing the password
-router.post('/user/change/password', isAuth, authController.postChangePassword);
+router.post(
+	'/user/change/password',
+	[
+		body('newPassword')
+			.isLength({ min: 8 })
+			.withMessage('Password should be minimum eight chracters'),
+	],
+	isAuth,
+	authController.postChangePassword
+);
 
 // Secert (Only signin user can acess this)
 router.get('/secret', isAuth, (req, res, next) => {
