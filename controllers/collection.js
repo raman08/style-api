@@ -17,6 +17,7 @@ exports.getUserCollection = async (req, res, next) => {
 	if (!req.isAuth) {
 		return res.status(401).json({
 			message: 'User not authorized. Please Signin to view resourse',
+			statusCode: 401,
 		});
 	}
 
@@ -40,10 +41,17 @@ exports.getUserCollection = async (req, res, next) => {
 			};
 		});
 
-		res.json({ collections: collectionsData });
+		res.json({
+			message: 'Collection Fetched Sucessfully',
+			collections: collectionsData,
+			statusCode: 200,
+		});
 	} catch (err) {
 		console.error(err);
-		res.status(500).json({ message: 'Something Went Wrong' });
+		res.status(500).json({
+			message: 'Something Went Wrong',
+			statusCode: 500,
+		});
 	}
 };
 
@@ -56,10 +64,8 @@ exports.getUserCollection = async (req, res, next) => {
 //
 // ##########
 exports.postUserCollection = async (req, res, next) => {
-	const { category, brand } = req.body;
-	const collectionImage = req.file;
-
 	const validationErrors = await validationResult(req);
+
 	if (!validationErrors.isEmpty()) {
 		return res.status(400).json({
 			message: 'Invalid Data',
@@ -74,9 +80,13 @@ exports.postUserCollection = async (req, res, next) => {
 		});
 	}
 
+	const { category, brand } = req.body;
+	const collectionImage = req.file;
+
 	if (!req.isAuth) {
 		return res.status(401).json({
 			message: 'User not authorized. Please Signin to view resourse',
+			statusCode: 401,
 		});
 	}
 
@@ -104,10 +114,14 @@ exports.postUserCollection = async (req, res, next) => {
 		res.status(201).json({
 			messsage: 'Collection saved Sucessfully',
 			collection: collectionData,
+			statusCode: 201,
 		});
 	} catch (err) {
 		console.error(err);
-		res.status(500).json({ message: 'Something Went Wrong' });
+		res.status(500).json({
+			message: 'Something Went Wrong',
+			statusCode: 500,
+		});
 	}
 };
 
@@ -147,9 +161,13 @@ exports.deleteUserCollection = async (req, res, next) => {
 
 		res.json({
 			message: 'Procuct deleted Sucessfully',
+			statusCode: 200,
 		});
 	} catch (err) {
 		console.error(err);
-		res.status(500).json({ message: 'Something Went Wrong' });
+		res.status(500).json({
+			message: 'Something Went Wrong',
+			statusCode: 500,
+		});
 	}
 };

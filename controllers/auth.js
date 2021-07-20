@@ -22,6 +22,7 @@ exports.postSendOtp = async (req, res, next) => {
 	const { phoneNo } = req.body;
 
 	const validationErrors = await validationResult(req);
+
 	if (!validationErrors.isEmpty()) {
 		return res.status(400).json({
 			message: 'Invalid Data',
@@ -54,12 +55,12 @@ exports.postSendOtp = async (req, res, next) => {
 		.catch(err => {
 			if ((err.code = 60200)) {
 				return res.status(400).json({
-					statusCode: 400,
 					message: 'Invalid Phone Number',
+					statusCode: 400,
 				});
 			}
 			res.status(500).json({
-				errors: { message: 'Something Went Wrong' },
+				message: 'Something Went Wrong',
 				statusCode: 500,
 			});
 		});
@@ -82,11 +83,12 @@ exports.postVerifyPhoneNo = async (req, res, next) => {
 			message: 'Invalid Data',
 			errors: validationErrors.array().map(error => {
 				return {
-					error: error.msg,
+					message: error.msg,
 					value: error.value,
 					param: error.param,
 				};
 			}),
+			statusCode: 400,
 		});
 	}
 
@@ -145,11 +147,12 @@ exports.postSignUp = async (req, res, next) => {
 			message: 'Invalid Data',
 			errors: validationErrors.array().map(error => {
 				return {
-					error: error.msg,
+					message: error.msg,
 					value: error.value,
 					param: error.param,
 				};
 			}),
+			statusCode: 400,
 		});
 	}
 
@@ -171,11 +174,13 @@ exports.postSignUp = async (req, res, next) => {
 		res.status(201).json({
 			message: 'User register sucessfully!',
 			user: { _id: user._id, name: user.name, verified: verified },
+			statusCode: 201,
 		});
 	} catch (err) {
-		console.log(err);
+		console.error(err);
 		res.status(500).json({
-			message: 'Something went wrong. Plese try again later.',
+			message: 'Something went wrong',
+			statusCode: 500,
 		});
 	}
 };
@@ -196,11 +201,12 @@ exports.postSignInByPassword = async (req, res, next) => {
 			message: 'Invalid Data',
 			errors: validationErrors.array().map(error => {
 				return {
-					error: error.msg,
+					message: error.msg,
 					value: error.value,
 					param: error.param,
 				};
 			}),
+			statusCode: 400,
 		});
 	}
 
@@ -232,13 +238,18 @@ exports.postSignInByPassword = async (req, res, next) => {
 		const refreshToken = await RefreshToken.createToken(user);
 
 		res.json({
+			message: 'User Signin sucessfull',
 			user: { id: user.id, phoneNo: user.phoneNo },
 			accessToken: token,
 			refreshToken: refreshToken,
+			statusCode: 200,
 		});
 	} catch (err) {
 		console.error(err);
-		res.status(500).json({ message: 'Something Went Wrong' });
+		res.status(500).json({
+			message: 'Something Went Wrong',
+			statusCode: 500,
+		});
 	}
 };
 
@@ -282,9 +293,13 @@ exports.postSignInByRefreshToken = async (req, res, next) => {
 			message: 'Access Token generated!',
 			accessToken: accessToken,
 			refreshToken: rToken.token,
+			statusCode: 200,
 		});
 	} catch (err) {
 		console.error(err);
-		res.status(500).json({ message: 'Something Went Wrong' });
+		res.status(500).json({
+			message: 'Something Went Wrong',
+			statusCode: 500,
+		});
 	}
 };

@@ -6,7 +6,10 @@ const User = require('../models/user');
 
 exports.getLooks = async (req, res, next) => {
 	if (!req.isAuth) {
-		res.status(403).json({ message: 'User not authorized' });
+		res.status(403).json({
+			message: 'User not authorized',
+			statusCode: 403,
+		});
 	}
 
 	const lookType = req.query.type;
@@ -33,12 +36,18 @@ exports.getLooks = async (req, res, next) => {
 			};
 		});
 
-		console.log(looks);
 		console.log(looksData);
-		res.json({ looks: looksData });
+		res.json({
+			message: 'Looks fetched Sucessfully',
+			looks: looksData,
+			statusCode: 200,
+		});
 	} catch (err) {
 		console.error(err);
-		res.status(500).json({ message: 'Something Went Wrong' });
+		res.status(500).json({
+			message: 'Something Went Wrong',
+			statusCode: 500,
+		});
 	}
 };
 
@@ -60,7 +69,10 @@ exports.postLook = async (req, res, next) => {
 	}
 
 	if (!req.isAuth) {
-		res.status(403).json({ message: 'User not authorized' });
+		res.status(403).json({
+			message: 'User not authorized',
+			statusCode: 403,
+		});
 	}
 
 	const { type, name, clothings } = req.body;
@@ -72,6 +84,7 @@ exports.postLook = async (req, res, next) => {
 			clothings,
 			userId: req.user._id,
 		});
+
 		const user = await User.findById(req.user._id);
 
 		await look.save();
@@ -95,10 +108,14 @@ exports.postLook = async (req, res, next) => {
 		res.status(201).json({
 			message: 'Look created sucessfully!',
 			look: lookData,
+			statusCode: 201,
 		});
 	} catch (err) {
 		console.error(err);
-		res.status(500).json({ message: 'Something Went Wrong' });
+		res.status(500).json({
+			message: 'Something Went Wrong',
+			statusCode: 500,
+		});
 	}
 };
 
@@ -109,7 +126,9 @@ exports.deleteLook = async (req, res, next) => {
 		const look = await Look.findById(lookId);
 
 		if (!look) {
-			return res.status(404).json({ message: 'No Look Found' });
+			return res
+				.status(404)
+				.json({ message: 'No Look Found', statusCode: 404 });
 		}
 
 		look.clothings.forEach(async collectionId => {
@@ -126,9 +145,13 @@ exports.deleteLook = async (req, res, next) => {
 
 		res.json({
 			message: 'Look deleted Sucessfully',
+			statusCode: 200,
 		});
 	} catch (err) {
 		console.error(err);
-		res.status(500).json({ message: 'Something Went Wrong' });
+		res.status(500).json({
+			message: 'Something Went Wrong',
+			statusCode: 500,
+		});
 	}
 };

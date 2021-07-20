@@ -5,7 +5,9 @@ const User = require('../models/user');
 
 exports.getLists = async (req, res, next) => {
 	if (!req.isAuth) {
-		return res.status(403).json({ message: 'User not authorized' });
+		return res
+			.status(403)
+			.json({ message: 'User not authorized', statusCode: 403 });
 	}
 
 	const userId = req.user._id;
@@ -30,21 +32,26 @@ exports.getLists = async (req, res, next) => {
 
 exports.getList = async (req, res, next) => {
 	if (!req.isAuth) {
-		return res.status(403).json({ message: 'User not authorized' });
+		return res
+			.status(403)
+			.json({ message: 'User not authorized', statusCode: 403 });
 	}
 
 	const listId = req.params.listId;
 
 	if (!listId) {
-		return res.status(401).json({ message: 'No list Id provided' });
+		return res
+			.status(401)
+			.json({ message: 'No list Id provided', statusCode: 401 });
 	}
 	try {
 		const list = await ShoppingList.findById(listId);
 
 		if (!list) {
-			return res
-				.status(404)
-				.json({ message: 'No Shopping List found', statusCode: 404 });
+			return res.status(404).json({
+				message: 'No Shopping List found',
+				statusCode: 404,
+			});
 		}
 
 		const listData = {
@@ -53,10 +60,17 @@ exports.getList = async (req, res, next) => {
 			items: list.items,
 		};
 
-		res.status(200).json({ list: listData });
+		res.status(200).json({
+			message: 'Shopping List fetched Sucessfully',
+			list: listData,
+			statusCode: 200,
+		});
 	} catch (err) {
 		console.error(err);
-		res.status(500).json({ message: 'Something Went Wrong' });
+		res.status(500).json({
+			message: 'Something Went Wrong',
+			statusCode: 500,
+		});
 	}
 };
 
@@ -77,7 +91,9 @@ exports.postList = async (req, res, next) => {
 	}
 
 	if (!req.isAuth) {
-		return res.status(403).json({ message: 'User not authorized' });
+		return res
+			.status(403)
+			.json({ message: 'User not authorized', statusCode: 403 });
 	}
 
 	const { title, items } = req.body;
@@ -88,7 +104,7 @@ exports.postList = async (req, res, next) => {
 		if (!user) {
 			return res.status(404).json({
 				message: 'No user found',
-				errorCode: 404,
+				statusCode: 404,
 			});
 		}
 
@@ -108,22 +124,30 @@ exports.postList = async (req, res, next) => {
 				_id: list._id,
 				title: list.title,
 			},
+			statusCode: 201,
 		});
 	} catch (err) {
 		console.log(err);
-		res.status(500).json({ message: 'Something Went Wrong' });
+		res.status(500).json({
+			message: 'Something Went Wrong',
+			statusCode: 500,
+		});
 	}
 };
 
 exports.deleteList = async (req, res, next) => {
 	if (!req.isAuth) {
-		return res.status(403).json({ message: 'User not authorized' });
+		return res
+			.status(403)
+			.json({ message: 'User not authorized', statusCode: 403 });
 	}
 
 	const listId = req.params.listId;
 
 	if (!listId) {
-		return res.status(404).json({ message: 'No list Id provided' });
+		return res
+			.status(404)
+			.json({ message: 'No list Id provided', statusCode: 404 });
 	}
 
 	try {
@@ -141,13 +165,18 @@ exports.deleteList = async (req, res, next) => {
 		});
 	} catch (err) {
 		console.error(err);
-		res.status(500).json({ message: 'Something Went Wrong' });
+		res.status(500).json({
+			message: 'Something Went Wrong',
+			statusCode: 500,
+		});
 	}
 };
 
 exports.postUpdateList = async (req, res, next) => {
 	if (!req.isAuth) {
-		return res.status(403).json({ message: 'User not authorized' });
+		return res
+			.status(403)
+			.json({ message: 'User not authorized', statusCode: 403 });
 	}
 
 	const validationErrors = await validationResult(req);
@@ -170,7 +199,9 @@ exports.postUpdateList = async (req, res, next) => {
 	const { title, items } = req.body;
 
 	if (!listId) {
-		return res.status(404).json({ message: 'No list Id provided' });
+		return res
+			.status(404)
+			.json({ message: 'No list Id provided', statusCode: 404 });
 	}
 
 	try {
@@ -201,6 +232,9 @@ exports.postUpdateList = async (req, res, next) => {
 		});
 	} catch (err) {
 		console.error(err);
-		res.status(500).json({ message: 'Something Went Wrong' });
+		res.status(500).json({
+			message: 'Something Went Wrong',
+			statusCode: 200,
+		});
 	}
 };
