@@ -303,3 +303,52 @@ exports.postSignInByRefreshToken = async (req, res, next) => {
 		});
 	}
 };
+
+exports.postChangePassword = async (req, res, next) => {
+	console.log(req.isAuth);
+	if (!req.isAuth) {
+		return res.status(403).json({
+			message: 'User not authorized',
+			statusCode: 403,
+		});
+	}
+
+	const { oldPassword, newPassword } = req.body;
+
+	console.log(oldPassword, newPassword);
+	try {
+		const user = await User.findById(req.user._id);
+
+		if (!user) {
+			return res
+				.status(404)
+				.json({ message: 'No user found!', statusCode: 404 });
+		}
+
+		console.log(user);
+		console.log(oldPassword, user.password);
+		const isEqual = await bcrypt.compare(oldPassword, user.password);
+
+		if (!isEqual) {
+			return res
+				.status(401)
+				.json({ message: 'Invalid Password!', statusCode: 401 });
+		}
+
+		const hashPassword = await bcrypt.hash(newPassword, 12);
+
+		user.password = hashPassword;
+		await user.save();
+
+		res.status(201).json({
+			message: 'Password Change Sucessfully',
+			statusCode: 201,
+		});
+	} catch (err) {
+		console.error(err);
+		res.status(500).json({
+			message: 'Something Went Wrong',
+			statusCode: 500,
+		});
+	}
+};

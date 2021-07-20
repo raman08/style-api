@@ -4,6 +4,11 @@ const Look = require('../models/looks');
 const Collection = require('../models/userCollection');
 const User = require('../models/user');
 
+// ##########
+// 		Controller to get all looks from user and optionally filter by type
+//
+//		Required => (Query Paramater) type (Optional): Type to filter
+// ##########
 exports.getLooks = async (req, res, next) => {
 	if (!req.isAuth) {
 		res.status(403).json({
@@ -51,6 +56,13 @@ exports.getLooks = async (req, res, next) => {
 	}
 };
 
+// ##########
+// 		Controller to create a new look.
+//
+//		Required => type: Type of look
+// 					name: Unique name of look
+// 					clothings: Array of collections id to be included in the look
+// ##########
 exports.postLook = async (req, res, next) => {
 	const validationErrors = await validationResult(req);
 
@@ -119,6 +131,11 @@ exports.postLook = async (req, res, next) => {
 	}
 };
 
+// ##########
+// 		Controller to delete a specific look
+//
+//		Required => (Url Paramater) looId : ID of the look to be deleted
+// ##########
 exports.deleteLook = async (req, res, next) => {
 	const lookId = req.params.lookId;
 	try {

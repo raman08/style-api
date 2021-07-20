@@ -32,6 +32,7 @@ mongoose
 	});
 
 app.get('/api/test', (req, res, next) => {
+	console.log(req.isAuth);
 	res.json({ message: 'Api is running' });
 });
 

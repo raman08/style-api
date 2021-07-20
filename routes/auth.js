@@ -68,6 +68,9 @@ router.post(
 // SignIn With Refresh Token
 router.post('/user/signin/refresh', authController.postSignInByRefreshToken);
 
+// Changing the password
+router.post('/user/change/password', isAuth, authController.postChangePassword);
+
 // Secert (Only signin user can acess this)
 router.get('/secret', isAuth, (req, res, next) => {
 	if (req.isAuth) {
@@ -75,4 +78,5 @@ router.get('/secret', isAuth, (req, res, next) => {
 	}
 	res.status(401).json({ secret: null, error: 'Data Breach' });
 });
+
 module.exports = router;

@@ -3,6 +3,10 @@ const { validationResult } = require('express-validator');
 const ShoppingList = require('../models/shoppingList');
 const User = require('../models/user');
 
+// ##########
+// 		Controller to get all shopping list from user
+//
+// ##########
 exports.getLists = async (req, res, next) => {
 	if (!req.isAuth) {
 		return res
@@ -23,13 +27,16 @@ exports.getLists = async (req, res, next) => {
 			.json({ message: 'No user found', statusCode: 404 });
 	}
 
-	console.log(user);
-
 	res.status(200).json({
 		list: user.shoppingList,
 	});
 };
 
+// ##########
+// 		Controller to get a specific shopping list from user
+//
+//		Required => (Query Paramater) listId: Id of the list
+// ##########
 exports.getList = async (req, res, next) => {
 	if (!req.isAuth) {
 		return res
@@ -74,6 +81,12 @@ exports.getList = async (req, res, next) => {
 	}
 };
 
+// ##########
+// 		Controller to create a new list.
+//
+//		Required => title: Title of the list.
+// 					items: Array of the item for the list.
+// ##########
 exports.postList = async (req, res, next) => {
 	const validationErrors = await validationResult(req);
 	if (!validationErrors.isEmpty()) {
@@ -135,6 +148,11 @@ exports.postList = async (req, res, next) => {
 	}
 };
 
+// ##########
+// 		Controller to delete a specific list.
+//
+//		Required => (Query Paramater) listId: Id of the list to be deleted
+// ##########
 exports.deleteList = async (req, res, next) => {
 	if (!req.isAuth) {
 		return res
@@ -172,6 +190,12 @@ exports.deleteList = async (req, res, next) => {
 	}
 };
 
+// ##########
+// 		Controller to a specific list.
+//		Required => (Query Paramater) listId: Id of the list to be deleted
+// 					title: Updated title of the list
+// 					items: Updated items for the list
+// ##########
 exports.postUpdateList = async (req, res, next) => {
 	if (!req.isAuth) {
 		return res

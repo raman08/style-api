@@ -48,6 +48,10 @@ describe('Authentication Module', () => {
 
 	after(async () => dbDisconnect());
 
+	// ##########
+	// 		Test to verify the opt service
+	//
+	// ##########
 	describe('Verification Service Test', () => {
 		it('Give error if wrong phone number is given', done => {
 			request(app)
@@ -86,6 +90,10 @@ describe('Authentication Module', () => {
 		// });
 	});
 
+	// ##########
+	// 		Test to verify the singup service
+	//
+	// ##########
 	describe('Verifing Signup Service', () => {
 		it('Should throw an error if gender is not male/female/prefer not to say', done => {
 			request(app)
@@ -101,7 +109,9 @@ describe('Authentication Module', () => {
 				.then(res => {
 					expect(res.statusCode).to.be.eql(400);
 					expect(res.body).to.have.a.property('errors');
-					expect(res.body.errors[0].error).is.equal('Invalid Gender');
+					expect(res.body.errors[0].message).is.equal(
+						'Invalid Gender'
+					);
 					done();
 				})
 				.catch(err => done(err));
@@ -121,7 +131,7 @@ describe('Authentication Module', () => {
 				.then(res => {
 					expect(res.statusCode).to.be.eql(400);
 					expect(res.body).to.have.a.property('errors');
-					expect(res.body.errors[0].error).is.equal('Invalid Age');
+					expect(res.body.errors[0].message).is.equal('Invalid Age');
 					done();
 				})
 				.catch(err => done(err));
@@ -141,7 +151,7 @@ describe('Authentication Module', () => {
 				.then(res => {
 					expect(res.statusCode).to.be.eql(400);
 					expect(res.body).to.have.a.property('errors');
-					expect(res.body.errors[0].error).is.equal(
+					expect(res.body.errors[0].message).is.equal(
 						'Password should be minimum eight chracters'
 					);
 					done();
@@ -163,7 +173,7 @@ describe('Authentication Module', () => {
 				.then(res => {
 					expect(res.statusCode).to.be.eql(400);
 					expect(res.body).to.have.a.property('errors');
-					expect(res.body.errors[0].error).is.equal(
+					expect(res.body.errors[0].message).is.equal(
 						'User already register with this phone number. Sign In instead?'
 					);
 					done();
