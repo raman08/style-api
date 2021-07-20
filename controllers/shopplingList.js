@@ -1,3 +1,5 @@
+const { validationResult } = require('express-validator');
+
 const ShoppingList = require('../models/shoppingList');
 const User = require('../models/user');
 
@@ -59,6 +61,21 @@ exports.getList = async (req, res, next) => {
 };
 
 exports.postList = async (req, res, next) => {
+	const validationErrors = await validationResult(req);
+	if (!validationErrors.isEmpty()) {
+		return res.status(400).json({
+			message: 'Invalid Data',
+			errors: validationErrors.array().map(error => {
+				return {
+					message: error.msg,
+					value: error.value,
+					param: error.param,
+				};
+			}),
+			statusCode: 400,
+		});
+	}
+
 	if (!req.isAuth) {
 		return res.status(403).json({ message: 'User not authorized' });
 	}
@@ -133,8 +150,22 @@ exports.postUpdateList = async (req, res, next) => {
 		return res.status(403).json({ message: 'User not authorized' });
 	}
 
+	const validationErrors = await validationResult(req);
+	if (!validationErrors.isEmpty()) {
+		return res.status(400).json({
+			message: 'Invalid Data',
+			errors: validationErrors.array().map(error => {
+				return {
+					message: error.msg,
+					value: error.value,
+					param: error.param,
+				};
+			}),
+			statusCode: 400,
+		});
+	}
+
 	const listId = req.params.listId;
-	console.log(listId);
 
 	const { title, items } = req.body;
 

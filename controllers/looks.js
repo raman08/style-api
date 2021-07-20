@@ -1,3 +1,5 @@
+const { validationResult } = require('express-validator');
+
 const Look = require('../models/looks');
 const Collection = require('../models/userCollection');
 const User = require('../models/user');
@@ -41,6 +43,22 @@ exports.getLooks = async (req, res, next) => {
 };
 
 exports.postLook = async (req, res, next) => {
+	const validationErrors = await validationResult(req);
+
+	if (!validationErrors.isEmpty()) {
+		return res.status(400).json({
+			message: 'Invalid Data',
+			errors: validationErrors.array().map(error => {
+				return {
+					message: error.msg,
+					value: error.value,
+					param: error.param,
+				};
+			}),
+			statusCode: 400,
+		});
+	}
+
 	if (!req.isAuth) {
 		res.status(403).json({ message: 'User not authorized' });
 	}

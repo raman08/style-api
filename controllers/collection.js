@@ -1,3 +1,5 @@
+const { validationResult } = require('express-validator');
+
 const Collection = require('../models/userCollection');
 const User = require('../models/user');
 const Look = require('../models/looks');
@@ -57,7 +59,20 @@ exports.postUserCollection = async (req, res, next) => {
 	const { category, brand } = req.body;
 	const collectionImage = req.file;
 
-	console.log('File:', collectionImage);
+	const validationErrors = await validationResult(req);
+	if (!validationErrors.isEmpty()) {
+		return res.status(400).json({
+			message: 'Invalid Data',
+			errors: validationErrors.array().map(error => {
+				return {
+					message: error.msg,
+					value: error.value,
+					param: error.param,
+				};
+			}),
+			statusCode: 400,
+		});
+	}
 
 	if (!req.isAuth) {
 		return res.status(401).json({
