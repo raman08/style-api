@@ -37,6 +37,12 @@ const userSchema = mongoose.Schema({
 			ref: 'looks',
 		},
 	],
+	shoppingList: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'ShoppingList',
+		},
+	],
 });
 
 module.exports = mongoose.model('User', userSchema);

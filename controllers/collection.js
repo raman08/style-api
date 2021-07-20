@@ -17,14 +17,15 @@ exports.getUserCollection = async (req, res, next) => {
 			message: 'User not authorized. Please Signin to view resourse',
 		});
 	}
+
 	const query = {
 		userId: req.user._id,
 	};
+
 	if (category) {
 		query.category = category;
 	}
 
-	console.log(query);
 	try {
 		const collections = await Collection.find(query);
 
@@ -84,6 +85,7 @@ exports.postUserCollection = async (req, res, next) => {
 			brand: collection.brand,
 			image: collection.imageURI,
 		};
+
 		res.status(201).json({
 			messsage: 'Collection saved Sucessfully',
 			collection: collectionData,
