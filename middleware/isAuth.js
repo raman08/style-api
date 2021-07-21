@@ -6,7 +6,9 @@ exports.isAuth = (req, res, next) => {
 
 	if (token == null) {
 		req.isAuth = false;
-		return res.status(401).json({ message: 'No access token' });
+		return res
+			.status(401)
+			.json({ message: 'No access token', statusCode: 401 });
 	}
 
 	let decodedToken;
@@ -18,17 +20,22 @@ exports.isAuth = (req, res, next) => {
 		console.log(err);
 
 		if (err instanceof jwt.TokenExpiredError) {
-			return res
-				.status(401)
-				.send({ message: 'Access Token was expired!' });
+			return res.status(401).send({
+				message: 'Access Token was expired!',
+				statusCode: 401,
+			});
 		}
 
-		return res.status(403).json({ message: 'Token not valid' });
+		return res
+			.status(403)
+			.json({ message: 'Token not valid', statusCode: 403 });
 	}
 
 	if (!decodedToken) {
 		req.isAuth = false;
-		return res.status(403).json({ message: 'Token not valid' });
+		return res
+			.status(403)
+			.json({ message: 'Token not valid', statusCode: 403 });
 	}
 
 	req.isAuth = true;

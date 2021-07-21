@@ -7,6 +7,8 @@ const app = require('../app.test');
 const User = require('../models/user');
 const RefreshToken = require('../models/userRefershToken');
 
+let accessToken;
+
 describe('Authentication Module', () => {
 	before(async () => {
 		dbConnect();
@@ -44,6 +46,18 @@ describe('Authentication Module', () => {
 		});
 
 		await userRefresh.save();
+
+		request(app)
+			.post('/auth/user/signin/password')
+			.send({
+				phoneNo: '2223334445',
+				password: 'tester1234',
+			})
+			.set('Accept', 'application/json')
+			.then(async res => {
+				accessToken = res.body.accessToken;
+			})
+			.catch(err => done(err));
 	});
 
 	after(async () => dbDisconnect());
@@ -286,6 +300,75 @@ describe('Authentication Module', () => {
 
 					expect(res.body.refreshToken).to.be.equal(
 						'abd48c28-351a-4372-9d87-5153b2dc5d7f'
+					);
+
+					done();
+				})
+				.catch(err => done(err));
+		});
+	});
+
+	describe('Password Change Verification', () => {
+		it('Should give error if unauthenticated user try to change password', done => {
+			request(app)
+				.post('/auth/user/change/password')
+				.send({
+					oldPassword: 'test2',
+					newPassword: 'test23',
+				})
+				.set('Accept', 'application/json')
+				.then(async res => {
+					expect(res.statusCode).to.be.eql(401);
+
+					expect(res.body).to.have.a.property('message');
+					expect(res.body.message).is.equal('No access token');
+
+					done();
+				})
+				.catch(err => done(err));
+		});
+
+		it('Should give error if password is not correct', done => {
+			request(app)
+				.post('/auth/user/change/password')
+				.send({
+					oldPassword: 'test2',
+					newPassword: 'test2344',
+				})
+				.set({
+					Authorization: `Bearer ${accessToken}`,
+					Accept: 'application/json',
+				})
+				.set('Accept', 'application/json')
+				.then(async res => {
+					expect(res.statusCode).to.be.eql(401);
+
+					expect(res.body).to.have.a.property('message');
+					expect(res.body.message).is.equal('Invalid Password!');
+
+					done();
+				})
+				.catch(err => done(err));
+		});
+
+		it('Should change the password is everything is correct', done => {
+			request(app)
+				.post('/auth/user/change/password')
+				.send({
+					oldPassword: 'tester1234',
+					newPassword: 'tester3344',
+				})
+				.set({
+					Authorization: `Bearer ${accessToken}`,
+					Accept: 'application/json',
+				})
+				.set('Accept', 'application/json')
+				.then(async res => {
+					expect(res.statusCode).to.be.eql(201);
+
+					expect(res.body).to.have.a.property('message');
+					expect(res.body.message).is.equal(
+						'Password Change Sucessfully'
 					);
 
 					done();
