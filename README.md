@@ -5,19 +5,22 @@ This backend is implemented using node-express framework.
 <br>
 
 - [Wardo App backend](#wardo-app-backend)
-  - [API Endpoints](#api-endpoints)
-    - [Authentication Module](#authentication-module)
-    - [Collections Module](#collections-module)
-    - [Looks Module](#looks-module)
-  - [Models Structure](#models-structure)
-    - [User Model](#user-model)
-      - [Example](#example)
-    - [User RefreshToken Model](#user-refreshtoken-model)
-      - [Example](#example-1)
-    - [Collections Model](#collections-model)
-      - [Example](#example-2)
-    - [Looks Schema](#looks-schema)
-      - [Example](#example-3)
+	- [API Endpoints](#api-endpoints)
+		- [Authentication Module](#authentication-module)
+		- [Collections Module](#collections-module)
+		- [Looks Module](#looks-module)
+		- [Shopping List Module](#shopping-list-module)
+	- [Models Structure](#models-structure)
+		- [User Model](#user-model)
+			- [Example](#example)
+		- [User RefreshToken Model](#user-refreshtoken-model)
+			- [Example](#example-1)
+		- [Collections Model](#collections-model)
+			- [Example](#example-2)
+		- [Looks Model](#looks-model)
+			- [Example](#example-3)
+		- [Shopping List Model](#shopping-list-model)
+			- [Example](#example-4)
 
 ## API Endpoints
 
@@ -131,16 +134,16 @@ This backend is implemented using node-express framework.
 
     These are the parameter:
 
-    | Parameter | Type   | Require? | Description                                    |
-    | --------- | ------ | -------- | ---------------------------------------------- |
-    | name      | String | True     | The name of the user                           |
-    | phoneNo   | Number | True     | The Phone Number of the user                   |
-    | password  | String | True     | The password for the user account              |
-    | age       | Number | True     | Age of the user                                |
-    | gender    | String | True     | The gender of the user (Either Male/Female)    |
-    | verified  | Bool   | False    | True if the user is verified. Default is false |
+    | Parameter | Type   | Require? | Description                                                   |
+    | --------- | ------ | -------- | ------------------------------------------------------------- |
+    | name      | String | True     | The name of the user                                          |
+    | phoneNo   | Number | True     | The Phone Number of the user                                  |
+    | password  | String | True     | The password for the user account                             |
+    | age       | Number | True     | Age of the user                                               |
+    | gender    | String | True     | The gender of the user (Either Male/Female/Prefer Not to Say) |
+    | verified  | Bool   | False    | True if the user is verified. Default is false                |
 
-    This endpoint will create a new user and store it into database.
+    This endpoint will create a new user and store it into database. Each user must have a unique Phone Number. If user try to register with existing phone number then it will throw an error
 
     -   **Example:**
 
@@ -163,9 +166,26 @@ This backend is implemented using node-express framework.
         {
         	"message": "User register sucessfully!",
         	"user": {
-        		"_id": "60eddd4e4c42ef1dcd730945",
-        		"name": "Dummy name"
-        	}
+        		"_id": "60f7f6294f5e92385b740625",
+        		"name": "Raman Preet Singh"
+        	},
+        	"statusCode": 201
+        }
+        ```
+
+    -   **Response:** (With already register phone number)
+
+        ```json
+        {
+        	"message": "Invalid Data",
+        	"errors": [
+        		{
+        			"message": "User already register with this phone number. Sign In instead?",
+        			"value": "2223334445",
+        			"param": "phoneNo"
+        		}
+        	],
+        	"statusCode": 400
         }
         ```
 
@@ -199,12 +219,14 @@ This backend is implemented using node-express framework.
 
         ```json
         {
+        	"message": "User Signin sucessfull",
         	"user": {
-        		"id": "60e9dc49dc64bf157d2ba358",
-        		"phoneNo": 2223334445
+        		"id": "60f68cafb93500d6605a6584",
+        		"phoneNo": 7347501113
         	},
-        	"acessToken": "XXXXX",
-        	"refreshToken": "XXXXX"
+        	"accessToken": "XXXXX",
+        	"refreshToken": "XXXXX",
+        	"statusCode": 200
         }
         ```
 
@@ -247,7 +269,8 @@ This backend is implemented using node-express framework.
         {
         	"message": "Access Token generated!",
         	"accessToken": "XXXXX",
-        	"refreshToken": "XXXXX"
+        	"refreshToken": "XXXXX",
+        	"statusCode": 200
         }
         ```
 
@@ -267,6 +290,31 @@ This backend is implemented using node-express framework.
 
 <hr>
 <br>
+
+6. **POST** http://localhost:3000/auth/user/change/password
+
+    These are the parameter:
+
+    | Parameter   | Type   | Require? | Description              |
+    | ----------- | ------ | -------- | ------------------------ |
+    | oldPassword | String | True     | Old Password of the user |
+    | newPassword | String | True     | New Password of the user |
+
+    This endpoint will change the password from oldPassword to the new Password for user.
+
+    - **Example:**
+
+        ```json
+        POST http://localhost:3000/auth/user/change/password HTTP/1.1
+        Content-Type: application/json
+        Authorization: Bearer XXXXX
+
+        {
+        	"oldPassword": "old_password",
+        	"newPassword": "new_password"
+
+        }
+        ```
 
 ### Collections Module
 
@@ -295,6 +343,7 @@ This backend is implemented using node-express framework.
 
         ```json
         {
+        	"message": "Collection Fetched Sucessfully",
         	"collections": [
         		{
         			"_id": "60ee92afe237642b34491188",
@@ -307,12 +356,6 @@ This backend is implemented using node-express framework.
         			"category": "Dresses",
         			"brand": "Dress 2",
         			"imageURI": "/images/collections/Collection_60e9dc49dc64bf157d2ba358_1626247873986.jpeg"
-        		},
-        		{
-        			"_id": "60ee92cae237642b34491190",
-        			"category": "Dresses",
-        			"brand": "Dress 3",
-        			"imageURI": "/images/collections/Collection_60e9dc49dc64bf157d2ba358_1626247882204.jpeg"
         		},
         		{
         			"_id": "60ee92e7e237642b34491194",
@@ -327,12 +370,6 @@ This backend is implemented using node-express framework.
         			"imageURI": "/images/collections/Collection_60e9dc49dc64bf157d2ba358_1626247917014.jpeg"
         		},
         		{
-        			"_id": "60ee92f2e237642b3449119c",
-        			"category": "Shirts",
-        			"brand": "Shirt 3",
-        			"imageURI": "/images/collections/Collection_60e9dc49dc64bf157d2ba358_1626247922135.jpeg"
-        		},
-        		{
         			"_id": "60ee9304e237642b344911a0",
         			"category": "Jeans",
         			"brand": "Jeans 1",
@@ -343,14 +380,9 @@ This backend is implemented using node-express framework.
         			"category": "Jeans",
         			"brand": "Jeans 2",
         			"imageURI": "/images/collections/Collection_60e9dc49dc64bf157d2ba358_1626247944502.jpeg"
-        		},
-        		{
-        			"_id": "60ee930ee237642b344911a8",
-        			"category": "Jeans",
-        			"brand": "Jeans 3",
-        			"imageURI": "/images/collections/Collection_60e9dc49dc64bf157d2ba358_1626247950213.jpeg"
         		}
-        	]
+        	],
+        	"statusCode": 200
         }
         ```
 
@@ -365,6 +397,7 @@ This backend is implemented using node-express framework.
 
         ```json
         {
+        	"message": "Collection Fetched Sucessfully",
         	"collections": [
         		{
         			"_id": "60ee92afe237642b34491188",
@@ -377,14 +410,9 @@ This backend is implemented using node-express framework.
         			"category": "Dresses",
         			"brand": "Dress 2",
         			"imageURI": "/images/collections/Collection_60e9dc49dc64bf157d2ba358_1626247873986.jpeg"
-        		},
-        		{
-        			"_id": "60ee92cae237642b34491190",
-        			"category": "Dresses",
-        			"brand": "Dress 3",
-        			"imageURI": "/images/collections/Collection_60e9dc49dc64bf157d2ba358_1626247882204.jpeg"
         		}
-        	]
+        	],
+        	"statusCode": 200
         }
         ```
 
@@ -419,7 +447,8 @@ This backend is implemented using node-express framework.
         		"category": "Jeans",
         		"brand": "Jeans 4",
         		"image": "/images/collections/Collection_60e9dc49dc64bf157d2ba358_1626250073549.jpeg"
-        	}
+        	},
+        	"statusCode": 201
         }
         ```
 
@@ -445,7 +474,10 @@ This backend is implemented using node-express framework.
     - **Response:**
 
         ```json
-        { "message": "Procuct deleted Sucessfully" }
+        {
+        	"message": "Procuct deleted Sucessfully",
+        	"statusCode": 200
+        }
         ```
 
 <br>
@@ -477,6 +509,7 @@ This backend is implemented using node-express framework.
 
         ```json
         {
+        	"message": "Looks fetched Sucessfully",
         	"looks": [
         		{
         			"_id": "60ee9e0ffb7f3d65204b02ae",
@@ -507,48 +540,11 @@ This backend is implemented using node-express framework.
         					"category": "Dresses",
         					"brand": "Dress 1",
         					"imageURI": "/images/collections/Collection_60e9dc49dc64bf157d2ba358_1626247855254.jpeg"
-        				},
-        				{
-        					"_id": "60ee930ee237642b344911a8",
-        					"category": "Jeans",
-        					"brand": "Jeans 3",
-        					"imageURI": "/images/collections/Collection_60e9dc49dc64bf157d2ba358_1626247950213.jpeg"
-        				}
-        			]
-        		},
-        		{
-        			"_id": "60ee9fb7a62eff7ac0b21ae4",
-        			"type": "Party",
-        			"name": "Party 1",
-        			"clothings": [
-        				{
-        					"_id": "60ee92cae237642b34491190",
-        					"category": "Dresses",
-        					"brand": "Dress 3",
-        					"imageURI": "/images/collections/Collection_60e9dc49dc64bf157d2ba358_1626247882204.jpeg"
-        				}
-        			]
-        		},
-        		{
-        			"_id": "60eea052a62eff7ac0b21aeb",
-        			"type": "Party",
-        			"name": "Party 2",
-        			"clothings": [
-        				{
-        					"_id": "60ee92ede237642b34491198",
-        					"category": "Shirts",
-        					"brand": "Shirt 2",
-        					"imageURI": "/images/collections/Collection_60e9dc49dc64bf157d2ba358_1626247917014.jpeg"
-        				},
-        				{
-        					"_id": "60ee99478c788f591ce45ead",
-        					"category": "Jeans",
-        					"brand": "Jeans 4",
-        					"imageURI": "/images/collections/Collection_60e9dc49dc64bf157d2ba358_1626249543116.jpeg"
         				}
         			]
         		}
-        	]
+        	],
+        	"statusCode": 200
         }
         ```
 
@@ -563,6 +559,7 @@ This backend is implemented using node-express framework.
     - **Response:**
         ```json
         {
+        	"message": "Looks fetched Sucessfully",
         	"looks": [
         		{
         			"_id": "60ee9fb7a62eff7ac0b21ae4",
@@ -596,13 +593,14 @@ This backend is implemented using node-express framework.
         				}
         			]
         		}
-        	]
+        	],
+        	"statusCode": 200
         }
         ```
 
 <br>
 
-2. **POST** http://localhost:3000/user/collection/new
+2. **POST** http://localhost:3000/user/looks/new
 
     These are the accepted parameter:
 
@@ -643,7 +641,8 @@ This backend is implemented using node-express framework.
         			"60ee92afe237642b34491188",
         			"60ee930ee237642b344911a8"
         		]
-        	}
+        	},
+        	"statusCode": 201
         }
         ```
 
@@ -669,13 +668,207 @@ This backend is implemented using node-express framework.
     - **Response:** (If look is found)
 
         ```json
-        { "message": "Look deleted Sucessfully" }
+        {
+        	"message": "Look deleted Sucessfully",
+        	"statusCode": 200
+        }
         ```
 
     - **Response:** (If no look found)
 
         ```json
-        { "message": "No Look Found" }
+        {
+        	"message": "No Look Found",
+        	"statusCode": 404
+        }
+        ```
+
+<br>
+
+### Shopping List Module
+
+> **Base URI**: /user/looks
+
+<br>
+
+1. **GET** http://localhost:3000/user/shopping/list/all
+
+    This endpoint will returns all the shopping list that are created by the user.
+
+    - **Example:**
+
+        ```json
+        GET http://localhost:3000/user/shopping/list/all HTTP/1.1
+        Authorization: Bearer XXXXX
+        ```
+
+    - **Response:**
+
+        ```json
+        {
+        	"message": "Shopping List fetched sucessfully",
+        	"list": [
+        		{
+        			"items": ["Item 1", "Item 2"],
+        			"_id": "60f68d07b93500d6605a658b",
+        			"title": "List 1"
+        		},
+        		{
+        			"items": ["Item 1", "Item 2", "Item 3"],
+        			"_id": "60f6b27782c86ea46c7c18e8",
+        			"title": "List 2"
+        		}
+        	],
+        	"statusCode": 200
+        }
+        ```
+
+<br>
+
+2. **GET** http://localhost:3000/user/shopping/list/{{ listID }}
+
+    These are the accepted url parameter:
+
+    | Parameter | Type       | Require? | Description                                         |
+    | --------- | ---------- | -------- | --------------------------------------------------- |
+    | listId    | DocumentID | True     | The document id of the list which is to be featched |
+
+    This endpoint will returns the specific list documuet.
+
+    - **Example:**
+
+        ```json
+        GET http://localhost:3000/user/shopping/list/60f68d07b93500d6605a658b HTTP/1.1
+        Authorization: Bearer XXXXX
+        ```
+
+    - **Response:**
+
+        ```json
+        {
+        	"message": "Shopping List fetched Sucessfully",
+        	"list": {
+        		"_id": "60f68d07b93500d6605a658b",
+        		"title": "List 1",
+        		"items": ["Item 1", "Item 2"]
+        	},
+        	"statusCode": 200
+        }
+        ```
+
+<br>
+
+3. **POST** http://localhost:3000/user/shopping/list/new
+
+    These are the accepted parameter:
+
+    | Parameter | Type     | Require? | Description                                         |
+    | --------- | -------- | -------- | --------------------------------------------------- |
+    | title     | String   | True     | Title for the new shopping list                     |
+    | items     | [String] | True     | Array of the items which is to be added in the list |
+
+    This endpoint will create a new shopping list document.
+
+    - **Example:**
+
+        ```json
+        POST http://localhost:3000/user/shopping/list/new HTTP/1.1
+        Content-Type: application/json
+        Authorization: Bearer XXXXX
+
+        {
+        	"title":"List 3",
+        	"items": [
+        		"Item 1",
+        		"Item 2",
+        		"Item 3"
+        	]
+        }
+        ```
+
+    - **Response:**
+
+        ```json
+        {
+        	"message": "Shopping List Created Sucessfully",
+        	"list": {
+        		"_id": "60f8024c0e4832747e51cac7",
+        		"title": "List 5"
+        	},
+        	"statusCode": 201
+        }
+        ```
+
+<br>
+
+4. **Delete** http://localhost:3000/user/shopping/list/{{ listID }}
+
+    These are the accepted url parameter:
+
+    | Parameter | Type       | Require? | Description                                        |
+    | --------- | ---------- | -------- | -------------------------------------------------- |
+    | listId    | DocumentID | True     | The document id of the list which is to be deleted |
+
+    This endpoint will delete the specific list documuet.
+
+    - **Example:**
+
+        ```json
+        GET http://localhost:3000/user/shopping/list/delete/60f68d07b93500d6605a658b HTTP/1.1
+        Authorization: Bearer XXXXX
+        ```
+
+    - **Response:**
+
+        ```json
+        {
+        	"message": "List Deleted Sucessfully",
+        	"statusCode": 200
+        }
+        ```
+
+<br>
+
+1. **PUT** http://localhost:3000/user/shopping/list/update/{{ listId }}
+
+    These are the accepted url parameter:
+
+    | Parameter | Type       | Require? | Description                                        |
+    | --------- | ---------- | -------- | -------------------------------------------------- |
+    | listId    | DocumentID | True     | The document id of the list which is to be updated |
+
+    These are the accepted parameter:
+
+    | Parameter | Type | Require? | Description |
+    | title | String | True | Title for the new shopping list |
+    | items | [String] | True | Array of the items which is to be added in the list |
+
+    This endpoint will delete the specific list documuet.
+
+    - **Example:**
+
+        ```json
+        PUT http://localhost:3000/user/shopping/list/update/60f69191626e3ef4a8b83185 HTTP/1.1
+        Content-Type: application/json
+        Authorization: Bearer XXXXX
+
+
+        {
+        	"title":"List 99",
+        	"items": [
+        		"Item 1",
+        		"Item 2"
+        	]
+        }
+        ```
+
+    - **Response:**
+
+        ```json
+        {
+        	"message": "List Updated Sucessfully",
+        	"statusCode": 200
+        }
         ```
 
 <br>
@@ -692,16 +885,17 @@ This model store the basic information for the user.
 
 <br>
 
-| Field Name | Type                             | Description                                    |
-| ---------- | -------------------------------- | ---------------------------------------------- |
-| Name       | String                           | **REQUIRED** Name of the user                  |
-| Password   | String                           | **REQUIRED** Password of the user              |
-| Phone No.  | Integer                          | **REQUIRED** Phone Number of the user          |
-| Age        | Integer                          | **REQUIRED** Age of the user                   |
-| Gender     | String                           | **REQUIRED** Gender of the user                |
-| Verified   | Boolean                          | _True_ if user is verified. Default is _false_ |
-| Collection | [Object ID \| Collection Schema] | The list of the collection that the user have  |
-| Looks      | [Object ID \| Looks Schema]      | The list of the looks that the user have       |
+| Field Name    | Type                               | Description                                    |
+| ------------- | ---------------------------------- | ---------------------------------------------- |
+| Name          | String                             | **REQUIRED** Name of the user                  |
+| Password      | String                             | **REQUIRED** Password of the user              |
+| Phone No.     | Integer                            | **REQUIRED** Phone Number of the user          |
+| Age           | Integer                            | **REQUIRED** Age of the user                   |
+| Gender        | String                             | **REQUIRED** Gender of the user                |
+| Verified      | Boolean                            | _True_ if user is verified. Default is _false_ |
+| Collection    | [Object ID \| Collection Schema]   | The list of the collection that the user have  |
+| Looks         | [Object ID \| Looks Schema]        | The list of the looks that the user have       |
+| Shopping List | [Object ID \| ShoppingList Schema] | The list of the shopping list user have        |
 
 <br>
 
@@ -722,7 +916,8 @@ This model store the basic information for the user.
 		"60ed7b16fe3f599a7b48a58f",
 		"60ed7b1cfe3f599a7b48a593"
 	],
-	"looks": ["60ed7bc20598789fcc3b00be", "60ed7be70598789fcc3b00c4"]
+	"looks": ["60ed7bc20598789fcc3b00be", "60ed7be70598789fcc3b00c4"],
+	"shoppingList": ["60ed7bc20598789fcc3322o", "60ed7be70598789fcc3b0032"]
 }
 ```
 
@@ -789,7 +984,7 @@ This model stores the collections of the user
 
 <br>
 
-### Looks Schema
+### Looks Model
 
 <br>
 This model stores the collections of the user
@@ -812,5 +1007,29 @@ This model stores the collections of the user
 	"type": "Casual",
 	"name": "Casual 2",
 	"userId": "60e9dc49dc64bf157d2ba358"
+}
+```
+
+### Shopping List Model
+
+<br>
+This model stores the collections of the user
+<br>
+<br>
+
+| Field Name | Type                    | Description                              |
+| ---------- | ----------------------- | ---------------------------------------- |
+| User Id    | Object Id\| User Schema | **REQUIRED** The user id                 |
+| Title      | String                  | **REQUIRED** Title for the shopping list |
+| Items      | [String]                | **Required** Items in the shopping list  |
+
+#### Example
+
+```json
+{
+	"_id": "60f68d07b93500d6605a658b",
+	"items": ["Item 1", "Item 2"],
+	"userId": "60f68cafb93500d6605a6584",
+	"title": "List 1"
 }
 ```

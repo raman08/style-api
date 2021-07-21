@@ -28,7 +28,9 @@ exports.getLists = async (req, res, next) => {
 	}
 
 	res.status(200).json({
+		message: 'Shopping List fetched sucessfully',
 		list: user.shoppingList,
+		statusCode: 200,
 	});
 };
 

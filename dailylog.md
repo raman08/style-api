@@ -14,3 +14,4 @@
 | Jul, 18 2021 | 0hrs       | N/A                                                                                                |
 | Jul, 19 2021 | 1hrs       | Analysed the application                                                                           |
 | Jul, 20 2021 | 4.5hrs     | Completed the shopping list module and normalized the api responses, added validation of user data |
+| Jul, 21 2021 | 1.5hrs     | Updated the documentation with new module and push the new version to the cloud                    |

@@ -78,7 +78,7 @@ router.delete(
 	listController.deleteList
 );
 
-router.post(
+router.put(
 	'/shopping/list/update/:listId',
 	isAuth,
 	listController.postUpdateList
