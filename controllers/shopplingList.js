@@ -14,24 +14,29 @@ exports.getLists = async (req, res, next) => {
 			.json({ message: 'User not authorized', statusCode: 403 });
 	}
 
-	const userId = req.user._id;
+	try {
+		const userId = req.user._id;
 
-	const user = await User.findById(userId).populate(
-		'shoppingList',
-		'_id title items'
-	);
+		const user = await User.findById(userId).populate(
+			'shoppingList',
+			'_id title items'
+		);
 
-	if (!user) {
-		return res
-			.status(404)
-			.json({ message: 'No user found', statusCode: 404 });
+		if (!user) {
+			return res
+				.status(404)
+				.json({ message: 'No user found', statusCode: 404 });
+		}
+
+		res.status(200).json({
+			message: 'Shopping List fetched sucessfully',
+			list: user.shoppingList,
+			statusCode: 200,
+		});
+	} catch (err) {
+		err.status = 500;
+		next(err);
 	}
-
-	res.status(200).json({
-		message: 'Shopping List fetched sucessfully',
-		list: user.shoppingList,
-		statusCode: 200,
-	});
 };
 
 // ##########
@@ -53,6 +58,7 @@ exports.getList = async (req, res, next) => {
 			.status(401)
 			.json({ message: 'No list Id provided', statusCode: 401 });
 	}
+
 	try {
 		const list = await ShoppingList.findById(listId);
 
@@ -75,11 +81,8 @@ exports.getList = async (req, res, next) => {
 			statusCode: 200,
 		});
 	} catch (err) {
-		console.error(err);
-		res.status(500).json({
-			message: 'Something Went Wrong',
-			statusCode: 500,
-		});
+		err.status = 500;
+		next(err);
 	}
 };
 
@@ -142,11 +145,8 @@ exports.postList = async (req, res, next) => {
 			statusCode: 201,
 		});
 	} catch (err) {
-		console.log(err);
-		res.status(500).json({
-			message: 'Something Went Wrong',
-			statusCode: 500,
-		});
+		err.status = 500;
+		next(err);
 	}
 };
 
@@ -184,11 +184,8 @@ exports.deleteList = async (req, res, next) => {
 			statusCode: 200,
 		});
 	} catch (err) {
-		console.error(err);
-		res.status(500).json({
-			message: 'Something Went Wrong',
-			statusCode: 500,
-		});
+		err.status = 500;
+		next(err);
 	}
 };
 
@@ -257,10 +254,7 @@ exports.postUpdateList = async (req, res, next) => {
 			statusCode: 200,
 		});
 	} catch (err) {
-		console.error(err);
-		res.status(500).json({
-			message: 'Something Went Wrong',
-			statusCode: 200,
-		});
+		err.status = 500;
+		next(err);
 	}
 };

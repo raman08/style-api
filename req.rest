@@ -23,7 +23,7 @@ Content-Type: application/json
 
 {
 	"name": "Raman Preet Singh",
-	"phoneNo": "7347501112",
+	"phoneNo": "7347501118",
 	"password": "test2222",
 	"age": "18",
 	"gender": "Male"
@@ -36,7 +36,7 @@ Content-Type: application/json
 
 {
 	"phoneNo": "7347501113",
-	"password": "test2"
+	"password": "test2323"
 
 }
 
@@ -46,49 +46,49 @@ POST http://localhost:3000/auth/user/signin/refresh HTTP/1.1
 Content-Type: application/json
 
 {
-	"refreshToken": "94809b6a-bc98-413c-adb5-51a079cf94cd"
+	"refreshToken": "f07c67f1-27dc-4fc7-b410-ea994c0e97d1"
 
 }
 
 ###
 # Testing the signin
 GET http://localhost:3000/auth/secret HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZjY4Y2FmYjkzNTAwZDY2MDVhNjU4NCIsImlhdCI6MTYyNjg2MzU2OSwiZXhwIjoxNjI2ODY3MTY5fQ.uJ3Tm0BVJT4ZfOhWhCxg2EjC17WNZkQ-CmlxXH023bk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZjY4Y2FmYjkzNTAwZDY2MDVhNjU4NCIsImlhdCI6MTYyNjk3Njg5MiwiZXhwIjoxNjI2OTgwNDkyfQ.GN4-SdNV8p8Is2efp0NuEXTBiDwmonUDRVYno1BT9fo
 
 ###
 # Request for changing the password
 POST http://localhost:3000/auth/user/change/password HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZjY4Y2FmYjkzNTAwZDY2MDVhNjU4NCIsImlhdCI6MTYyNjg2MzU2OSwiZXhwIjoxNjI2ODY3MTY5fQ.uJ3Tm0BVJT4ZfOhWhCxg2EjC17WNZkQ-CmlxXH023bk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZjY4Y2FmYjkzNTAwZDY2MDVhNjU4NCIsImlhdCI6MTYyNjk3Njg5MiwiZXhwIjoxNjI2OTgwNDkyfQ.GN4-SdNV8p8Is2efp0NuEXTBiDwmonUDRVYno1BT9fo
 
 {
 	"oldPassword": "test2",
-	"newPassword": "test23"
+	"newPassword": "test2323"
 
 }
 
 ###
 # Get all the user collection or collection for specific category
 GET http://localhost:3000/user/collection HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZjY4Y2FmYjkzNTAwZDY2MDVhNjU4NCIsImlhdCI6MTYyNjg2MzU2OSwiZXhwIjoxNjI2ODY3MTY5fQ.uJ3Tm0BVJT4ZfOhWhCxg2EjC17WNZkQ-CmlxXH023bk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZjY4Y2FmYjkzNTAwZDY2MDVhNjU4NCIsImlhdCI6MTYyNjk3Njg5MiwiZXhwIjoxNjI2OTgwNDkyfQ.GN4-SdNV8p8Is2efp0NuEXTBiDwmonUDRVYno1BT9fo
 
 
 ###
 #  Delete a specific collection document
-DELETE http://localhost:3000/user/collection/delete/60f6afdf5c4aef96392a131a HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZjY4Y2FmYjkzNTAwZDY2MDVhNjU4NCIsImlhdCI6MTYyNjg2MzU2OSwiZXhwIjoxNjI2ODY3MTY5fQ.uJ3Tm0BVJT4ZfOhWhCxg2EjC17WNZkQ-CmlxXH023bk
+DELETE http://localhost:3000/user/collection/delete/60f6ae2b14d1d485751bfe71 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZjY4Y2FmYjkzNTAwZDY2MDVhNjU4NCIsImlhdCI6MTYyNjk3Njg5MiwiZXhwIjoxNjI2OTgwNDkyfQ.GN4-SdNV8p8Is2efp0NuEXTBiDwmonUDRVYno1BT9fo
 
 
 ###
 # Get All looks
 GET http://localhost:3000/user/looks HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZjY4Y2FmYjkzNTAwZDY2MDVhNjU4NCIsImlhdCI6MTYyNjg2MzU2OSwiZXhwIjoxNjI2ODY3MTY5fQ.uJ3Tm0BVJT4ZfOhWhCxg2EjC17WNZkQ-CmlxXH023bk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZjY4Y2FmYjkzNTAwZDY2MDVhNjU4NCIsImlhdCI6MTYyNjk3Njg5MiwiZXhwIjoxNjI2OTgwNDkyfQ.GN4-SdNV8p8Is2efp0NuEXTBiDwmonUDRVYno1BT9fo
 
 ###
 # Create a new look
 POST  http://localhost:3000/user/looks/new HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZjY4Y2FmYjkzNTAwZDY2MDVhNjU4NCIsImlhdCI6MTYyNjg2MzU2OSwiZXhwIjoxNjI2ODY3MTY5fQ.uJ3Tm0BVJT4ZfOhWhCxg2EjC17WNZkQ-CmlxXH023bk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZjY4Y2FmYjkzNTAwZDY2MDVhNjU4NCIsImlhdCI6MTYyNjk3Njg5MiwiZXhwIjoxNjI2OTgwNDkyfQ.GN4-SdNV8p8Is2efp0NuEXTBiDwmonUDRVYno1BT9fo
 
 {
 	"type": "Party",
@@ -102,14 +102,14 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZjY4Y2FmY
 ###
 #  Delete a specific look
 DELETE http://localhost:3000/user/looks/delete/60f7fa854f5e92385b740632 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZjY4Y2FmYjkzNTAwZDY2MDVhNjU4NCIsImlhdCI6MTYyNjg2MzU2OSwiZXhwIjoxNjI2ODY3MTY5fQ.uJ3Tm0BVJT4ZfOhWhCxg2EjC17WNZkQ-CmlxXH023bk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZjY4Y2FmYjkzNTAwZDY2MDVhNjU4NCIsImlhdCI6MTYyNjk3Njg5MiwiZXhwIjoxNjI2OTgwNDkyfQ.GN4-SdNV8p8Is2efp0NuEXTBiDwmonUDRVYno1BT9fo
 
 
 ###
 # Creating a new Shopping List
 POST http://localhost:3000/user/shopping/list/new HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZjY4Y2FmYjkzNTAwZDY2MDVhNjU4NCIsImlhdCI6MTYyNjg2MzU2OSwiZXhwIjoxNjI2ODY3MTY5fQ.uJ3Tm0BVJT4ZfOhWhCxg2EjC17WNZkQ-CmlxXH023bk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZjY4Y2FmYjkzNTAwZDY2MDVhNjU4NCIsImlhdCI6MTYyNjk3Njg5MiwiZXhwIjoxNjI2OTgwNDkyfQ.GN4-SdNV8p8Is2efp0NuEXTBiDwmonUDRVYno1BT9fo
 
 
 {
@@ -124,24 +124,24 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZjY4Y2FmY
 ###
 # Getting all shopping list  by user
 GET http://localhost:3000/user/shopping/list/all HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZjY4Y2FmYjkzNTAwZDY2MDVhNjU4NCIsImlhdCI6MTYyNjg2MzU2OSwiZXhwIjoxNjI2ODY3MTY5fQ.uJ3Tm0BVJT4ZfOhWhCxg2EjC17WNZkQ-CmlxXH023bk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZjY4Y2FmYjkzNTAwZDY2MDVhNjU4NCIsImlhdCI6MTYyNjk3Njg5MiwiZXhwIjoxNjI2OTgwNDkyfQ.GN4-SdNV8p8Is2efp0NuEXTBiDwmonUDRVYno1BT9fo
 
 ###
 # Getting specific list
 GET http://localhost:3000/user/shopping/list/60f68d07b93500d6605a658b HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZjY4Y2FmYjkzNTAwZDY2MDVhNjU4NCIsImlhdCI6MTYyNjg2MzU2OSwiZXhwIjoxNjI2ODY3MTY5fQ.uJ3Tm0BVJT4ZfOhWhCxg2EjC17WNZkQ-CmlxXH023bk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZjY4Y2FmYjkzNTAwZDY2MDVhNjU4NCIsImlhdCI6MTYyNjk3Njg5MiwiZXhwIjoxNjI2OTgwNDkyfQ.GN4-SdNV8p8Is2efp0NuEXTBiDwmonUDRVYno1BT9fo
 
 ###
 # Deleting a  specific list
 DELETE  http://localhost:3000/user/shopping/list/delete/60f68d07b93500d6605a658b HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZjY4Y2FmYjkzNTAwZDY2MDVhNjU4NCIsImlhdCI6MTYyNjg2MzU2OSwiZXhwIjoxNjI2ODY3MTY5fQ.uJ3Tm0BVJT4ZfOhWhCxg2EjC17WNZkQ-CmlxXH023bk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZjY4Y2FmYjkzNTAwZDY2MDVhNjU4NCIsImlhdCI6MTYyNjk3Njg5MiwiZXhwIjoxNjI2OTgwNDkyfQ.GN4-SdNV8p8Is2efp0NuEXTBiDwmonUDRVYno1BT9fo
 
 
 ###
 # Editing a existing Shopping List
 PUT http://localhost:3000/user/shopping/list/update/60f69191626e3ef4a8b83185 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZjY4Y2FmYjkzNTAwZDY2MDVhNjU4NCIsImlhdCI6MTYyNjg2MzU2OSwiZXhwIjoxNjI2ODY3MTY5fQ.uJ3Tm0BVJT4ZfOhWhCxg2EjC17WNZkQ-CmlxXH023bk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZjY4Y2FmYjkzNTAwZDY2MDVhNjU4NCIsImlhdCI6MTYyNjk3Njg5MiwiZXhwIjoxNjI2OTgwNDkyfQ.GN4-SdNV8p8Is2efp0NuEXTBiDwmonUDRVYno1BT9fo
 
 
 {
@@ -151,3 +151,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZjY4Y2FmY
 		"Item 2"
 	]
 }
+
+
+###
+# For 404 errors
+
+GET http://localhost:3000/fakkker HTTP/1.1

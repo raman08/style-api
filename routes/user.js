@@ -1,6 +1,7 @@
 const express = require('express');
 const multer = require('multer');
-const { body } = require('express-validator');
+const { body, param } = require('express-validator');
+const ObjectID = require('mongodb').ObjectID;
 
 const collectionController = require('../controllers/collection');
 const looksController = require('../controllers/looks');
@@ -27,12 +28,22 @@ router.post(
 			.isAscii()
 			.withMessage('Should Only contain the alphanumeric chracters'),
 	],
+	// checkCollectionFile,
+
 	collectionController.postUserCollection
 );
 
 router.delete(
 	'/collection/delete/:collectionId',
 	isAuth,
+	[
+		param('collectionId').custom((value, { req }) => {
+			if (!ObjectID.isValid(value)) {
+				throw new Error('Please enter a valid collection id');
+			}
+			return true;
+		}),
+	],
 	collectionController.deleteUserCollection
 );
 

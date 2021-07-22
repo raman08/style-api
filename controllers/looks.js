@@ -48,11 +48,8 @@ exports.getLooks = async (req, res, next) => {
 			statusCode: 200,
 		});
 	} catch (err) {
-		console.error(err);
-		res.status(500).json({
-			message: 'Something Went Wrong',
-			statusCode: 500,
-		});
+		err.status = 500;
+		next(err);
 	}
 };
 
@@ -123,11 +120,8 @@ exports.postLook = async (req, res, next) => {
 			statusCode: 201,
 		});
 	} catch (err) {
-		console.error(err);
-		res.status(500).json({
-			message: 'Something Went Wrong',
-			statusCode: 500,
-		});
+		err.status = 500;
+		next(err);
 	}
 };
 
@@ -165,10 +159,7 @@ exports.deleteLook = async (req, res, next) => {
 			statusCode: 200,
 		});
 	} catch (err) {
-		console.error(err);
-		res.status(500).json({
-			message: 'Something Went Wrong',
-			statusCode: 500,
-		});
+		err.status = 500;
+		next(err);
 	}
 };

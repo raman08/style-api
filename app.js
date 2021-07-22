@@ -42,6 +42,20 @@ app.use('/auth', authRoutes);
 // User Routes
 app.use('/user', userRoutes);
 
+app.use((req, res, next) => {
+	var err = new Error('Route not found');
+	err.status = 404;
+	next(err);
+});
+
+app.use((err, req, res, next) => {
+	res.status(err.status || 500);
+	res.json({
+		message: 'Something Went Wrong',
+		statusCode: err.status,
+	});
+});
+
 // Starting the server
 app.listen(process.env.PORT || 3000, () =>
 	console.log('[App.js] Server Started at http://localhost:3000')

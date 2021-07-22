@@ -59,10 +59,8 @@ exports.postSendOtp = async (req, res, next) => {
 					statusCode: 400,
 				});
 			}
-			res.status(500).json({
-				message: 'Something Went Wrong',
-				statusCode: 500,
-			});
+			err.status = 500;
+			next(err);
 		});
 };
 
@@ -119,11 +117,8 @@ exports.postVerifyPhoneNo = async (req, res, next) => {
 					statusCode: 404,
 				});
 			}
-			console.log(err);
-			res.status(500).json({
-				message: 'Something Went Wrong',
-				statusCode: 500,
-			});
+			err.status = 500;
+			next(err);
 		});
 };
 
@@ -177,11 +172,8 @@ exports.postSignUp = async (req, res, next) => {
 			statusCode: 201,
 		});
 	} catch (err) {
-		console.error(err);
-		res.status(500).json({
-			message: 'Something went wrong',
-			statusCode: 500,
-		});
+		err.status = 500;
+		next(err);
 	}
 };
 
@@ -245,11 +237,8 @@ exports.postSignInByPassword = async (req, res, next) => {
 			statusCode: 200,
 		});
 	} catch (err) {
-		console.error(err);
-		res.status(500).json({
-			message: 'Something Went Wrong',
-			statusCode: 500,
-		});
+		err.status = 500;
+		next(err);
 	}
 };
 
@@ -296,11 +285,8 @@ exports.postSignInByRefreshToken = async (req, res, next) => {
 			statusCode: 200,
 		});
 	} catch (err) {
-		console.error(err);
-		res.status(500).json({
-			message: 'Something Went Wrong',
-			statusCode: 500,
-		});
+		err.status = 500;
+		next(err);
 	}
 };
 
@@ -356,10 +342,7 @@ exports.postChangePassword = async (req, res, next) => {
 			statusCode: 201,
 		});
 	} catch (err) {
-		console.error(err);
-		res.status(500).json({
-			message: 'Something Went Wrong',
-			statusCode: 500,
-		});
+		err.status = 500;
+		next(err);
 	}
 };

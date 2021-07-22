@@ -17,8 +17,6 @@ exports.isAuth = (req, res, next) => {
 	} catch (err) {
 		req.isAuth = false;
 
-		console.log(err);
-
 		if (err instanceof jwt.TokenExpiredError) {
 			return res.status(401).send({
 				message: 'Access Token was expired!',

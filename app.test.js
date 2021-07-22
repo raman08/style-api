@@ -37,4 +37,18 @@ app.use('/auth', authRoutes);
 // User Routes
 app.use('/user', userRoutes);
 
+app.use((req, res, next) => {
+	var err = new Error('Route not found');
+	err.status = 404;
+	next(err);
+});
+
+app.use((err, req, res, next) => {
+	res.status(err.status || 500);
+	res.json({
+		message: err.message,
+		statusCode: err.status,
+	});
+});
+
 module.exports = app;
