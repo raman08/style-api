@@ -23,7 +23,7 @@ exports.getLooks = async (req, res, next) => {
 	};
 
 	if (lookType) {
-		console.log(lookType);
+		// console.log(lookType);
 		filterQuery.type = lookType;
 	}
 
@@ -41,7 +41,7 @@ exports.getLooks = async (req, res, next) => {
 			};
 		});
 
-		console.log(looksData);
+		// console.log(looksData);
 		res.json({
 			message: 'Looks fetched Sucessfully',
 			looks: looksData,
@@ -94,12 +94,32 @@ exports.postLook = async (req, res, next) => {
 			userId: req.user._id,
 		});
 
+		const collectionDocs = [];
+		const errId = [];
+
 		const user = await User.findById(req.user._id);
 
 		await look.save();
 
-		clothings.forEach(async cloth => {
+		for (let cloth of clothings) {
 			const collection = await Collection.findById(cloth);
+
+			if (!collection) {
+				errId.push(cloth);
+			} else {
+				collectionDocs.push(collection);
+			}
+		}
+
+		if (errId.length > 0) {
+			return res.status(400).json({
+				message: 'Collection with the id not found',
+				ids: errId,
+				statusCode: 400,
+			});
+		}
+
+		collectionDocs.forEach(async collection => {
 			collection.looks.push(look._id);
 			await collection.save();
 		});
@@ -114,12 +134,14 @@ exports.postLook = async (req, res, next) => {
 			name: look.name,
 			clothings: look.clothings,
 		};
+
 		res.status(201).json({
 			message: 'Look created sucessfully!',
 			look: lookData,
 			statusCode: 201,
 		});
 	} catch (err) {
+		console.log(err);
 		err.status = 500;
 		next(err);
 	}
@@ -131,6 +153,22 @@ exports.postLook = async (req, res, next) => {
 //		Required => (Url Paramater) looId : ID of the look to be deleted
 // ##########
 exports.deleteLook = async (req, res, next) => {
+	const validationErrors = await validationResult(req);
+
+	if (!validationErrors.isEmpty()) {
+		return res.status(400).json({
+			message: 'Invalid Data',
+			errors: validationErrors.array().map(error => {
+				return {
+					message: error.msg,
+					value: error.value,
+					param: error.param,
+				};
+			}),
+			statusCode: 400,
+		});
+	}
+
 	const lookId = req.params.lookId;
 	try {
 		const user = await User.findById(req.user._id);

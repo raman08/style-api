@@ -9,6 +9,8 @@ const listController = require('../controllers/shopplingList');
 const { isAuth } = require('../middleware/isAuth');
 const { multerCollectionImage } = require('../middleware/multerUtil');
 
+const Collection = require('../models/userCollection');
+
 const router = express.Router();
 
 // ################## Collection Routes ########################
@@ -58,12 +60,49 @@ router.post(
 		body('name').isAscii().withMessage('Invalid Name'),
 		body('clothings')
 			.isArray({ min: 1 })
-			.withMessage('There must be 1 clothing in the look'),
+			.withMessage('There must be 1 clothing in the look')
+			.custom(value => {
+				if (value) {
+					value.forEach(cloth => {
+						if (!ObjectID.isValid(cloth)) {
+							throw new Error('Invalid clothing ID');
+						}
+						return true;
+					});
+
+					// value.forEach(async cloth => {
+					// 	const clothDoc = await Collection.findById(cloth);
+
+					// 	if (!clothDoc) {
+					// 		throw new Error(
+					// 			'Collection contanning the id is not found'
+					// 		);
+					// 	}
+
+					// 	return true;
+					// });
+
+					return true;
+				}
+				return true;
+			}),
 	],
 	looksController.postLook
 );
 
-router.delete('/looks/delete/:lookId', isAuth, looksController.deleteLook);
+router.delete(
+	'/looks/delete/:lookId',
+	isAuth,
+	[
+		param('lookId').custom((value, { req }) => {
+			if (!ObjectID.isValid(value)) {
+				throw new Error('Please enter a valid look id');
+			}
+			return true;
+		}),
+	],
+	looksController.deleteLook
+);
 
 // ################################ Shopping List Routes ##########################
 

@@ -16,3 +16,4 @@
 | Jul, 20 2021 | 4.5hrs     | Completed the shopping list module and normalized the api responses, added validation of user data    |
 | Jul, 21 2021 | 2.5hrs     | Updated the documentation with new module and push the new version to the cloud. Write some new tests |
 | Jul, 22 2021 | 6hrs       | Complete the testing for collection module, fixed some edge cases and update error handeling system   |
+| Jul, 23 2021 | 2.5hrs     | Complete the testing for looks module, and fixed some edge case                                       |

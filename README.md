@@ -5,22 +5,22 @@ This backend is implemented using node-express framework.
 <br>
 
 - [Wardo App backend](#wardo-app-backend)
-	- [API Endpoints](#api-endpoints)
-		- [Authentication Module](#authentication-module)
-		- [Collections Module](#collections-module)
-		- [Looks Module](#looks-module)
-		- [Shopping List Module](#shopping-list-module)
-	- [Models Structure](#models-structure)
-		- [User Model](#user-model)
-			- [Example](#example)
-		- [User RefreshToken Model](#user-refreshtoken-model)
-			- [Example](#example-1)
-		- [Collections Model](#collections-model)
-			- [Example](#example-2)
-		- [Looks Model](#looks-model)
-			- [Example](#example-3)
-		- [Shopping List Model](#shopping-list-model)
-			- [Example](#example-4)
+  - [API Endpoints](#api-endpoints)
+    - [Authentication Module](#authentication-module)
+    - [Collections Module](#collections-module)
+    - [Looks Module](#looks-module)
+    - [Shopping List Module](#shopping-list-module)
+  - [Models Structure](#models-structure)
+    - [User Model](#user-model)
+      - [Example](#example)
+    - [User RefreshToken Model](#user-refreshtoken-model)
+      - [Example](#example-1)
+    - [Collections Model](#collections-model)
+      - [Example](#example-2)
+    - [Looks Model](#looks-model)
+      - [Example](#example-3)
+    - [Shopping List Model](#shopping-list-model)
+      - [Example](#example-4)
 
 ## API Endpoints
 
@@ -630,17 +630,14 @@ This backend is implemented using node-express framework.
         ```
 
     - **Response:**
+
         ```json
         {
         	"message": "Look created sucessfully!",
         	"look": {
         		"_id": "60ee9fb7a62eff7ac0b21ae4",
         		"type": "Casual",
-        		"name": "Casual 2",
-        		"clothings": [
-        			"60ee92afe237642b34491188",
-        			"60ee930ee237642b344911a8"
-        		]
+        		"name": "Casual 2"
         	},
         	"statusCode": 201
         }
@@ -648,7 +645,7 @@ This backend is implemented using node-express framework.
 
 <br>
 
-3. **Delete** http://localhost:3000/user/collection/delete/{lookId}
+1. **Delete** http://localhost:3000/user/collection/delete/{lookId}
 
     These are the accepted url parameter:
 
