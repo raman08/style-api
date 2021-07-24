@@ -51,6 +51,22 @@ exports.getList = async (req, res, next) => {
 			.json({ message: 'User not authorized', statusCode: 403 });
 	}
 
+	const validationErrors = await validationResult(req);
+
+	if (!validationErrors.isEmpty()) {
+		return res.status(400).json({
+			message: 'Invalid Data',
+			errors: validationErrors.array().map(error => {
+				return {
+					message: error.msg,
+					value: error.value,
+					param: error.param,
+				};
+			}),
+			statusCode: 400,
+		});
+	}
+
 	const listId = req.params.listId;
 
 	if (!listId) {
@@ -164,6 +180,22 @@ exports.deleteList = async (req, res, next) => {
 
 	const listId = req.params.listId;
 
+	const validationErrors = await validationResult(req);
+
+	if (!validationErrors.isEmpty()) {
+		return res.status(400).json({
+			message: 'Invalid Data',
+			errors: validationErrors.array().map(error => {
+				return {
+					message: error.msg,
+					value: error.value,
+					param: error.param,
+				};
+			}),
+			statusCode: 400,
+		});
+	}
+
 	if (!listId) {
 		return res
 			.status(404)
@@ -173,13 +205,22 @@ exports.deleteList = async (req, res, next) => {
 	try {
 		const user = await User.findById(req.user._id);
 
+		const list = await ShoppingList.findById(listId);
+
+		if (!list) {
+			return res.status(404).json({
+				message: 'No shopping list found',
+				statusCode: 404,
+			});
+		}
+
 		await ShoppingList.deleteOne({ _id: listId, userId: req.user._id });
 
 		user.shoppingList.pull(listId);
 
 		user.save();
 
-		res.status(201).json({
+		res.status(200).json({
 			message: 'List Deleted Sucessfully',
 			statusCode: 200,
 		});
@@ -251,7 +292,7 @@ exports.postUpdateList = async (req, res, next) => {
 
 		res.status(201).json({
 			message: 'List Updated Sucessfully',
-			statusCode: 200,
+			statusCode: 201,
 		});
 	} catch (err) {
 		err.status = 500;

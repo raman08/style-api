@@ -120,17 +120,49 @@ router.post(
 	listController.postList
 );
 
-router.get('/shopping/list/:listId', isAuth, listController.getList);
+router.get(
+	'/shopping/list/:listId',
+	isAuth,
+	[
+		param('listId').custom((value, { req }) => {
+			if (!ObjectID.isValid(value)) {
+				throw new Error('Please enter a valid shopping list id');
+			}
+			return true;
+		}),
+	],
+	listController.getList
+);
 
 router.delete(
 	'/shopping/list/delete/:listId',
 	isAuth,
+	[
+		param('listId').custom((value, { req }) => {
+			if (!ObjectID.isValid(value)) {
+				throw new Error('Please enter a valid shopping list id');
+			}
+			return true;
+		}),
+	],
 	listController.deleteList
 );
 
 router.put(
 	'/shopping/list/update/:listId',
 	isAuth,
+	[
+		param('listId').custom((value, { req }) => {
+			if (!ObjectID.isValid(value)) {
+				throw new Error('Please enter a valid shopping list id');
+			}
+			return true;
+		}),
+		body('title').isAscii().withMessage('Invalid Title'),
+		body('items')
+			.isArray({ min: 1 })
+			.withMessage('There must be 1 item in shopping list'),
+	],
 	listController.postUpdateList
 );
 
