@@ -18,3 +18,5 @@
 | Jul, 22 2021 | 6hrs       | Complete the testing for collection module, fixed some edge cases and update error handeling system   |
 | Jul, 23 2021 | 2.5hrs     | Complete the testing for looks module, and fixed some edge case                                       |
 | Jul, 24 2021 | 2hrs       | Complete the testing for shopping list module, and fixed some edge case                               |
+| Jul, 25 2021 | 0hrs       | N/A                                                                                                   |
+
